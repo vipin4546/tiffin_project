@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Tiffin - Healthy Home-Cooked Meals Delivered</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --secondary-teal: #20b2aa;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+      }
+
+      /* Global Styles */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark-color);
+      }
+
+      .section-padding {
+        padding: 80px 0;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        margin-bottom: 3rem;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        padding: 1rem 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        background-color: white;
+      }
+
+      .navbar-brand {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--primary-green) !important;
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        margin: 0 0.2rem;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+        color: var(--dark-color) !important;
+      }
+
+      .navbar-nav .nav-link:hover {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green) !important;
+      }
+
+      .navbar-nav .nav-link.active {
+        background-color: var(--primary-green);
+        color: white !important;
+      }
+
+      .btn-login {
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-login:hover {
+        background-color: var(--primary-green);
+        color: white;
+      }
+
+      .btn-signup {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn-signup:hover {
+        background-color: var(--primary-light);
+      }
+
+      /* Hero Section */
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.1&auto=format&fit=crop&w=1950&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0 100px;
+        position: relative;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .btn-hero-primary {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-hero-primary:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-2px);
+      }
+
+      .btn-hero-secondary {
+        background-color: transparent;
+        border: 2px solid white;
+        color: white;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-hero-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Problem Solution Section */
+      .problem-solution-section {
+        background-color: var(--light-color);
+      }
+
+      .problem-card,
+      .solution-card {
+        padding: 2.5rem;
+        border-radius: 8px;
+        height: 100%;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        background-color: white;
+      }
+
+      .problem-card:hover,
+      .solution-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .problem-card h3,
+      .solution-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark-color);
+      }
+
+      .problem-card ul,
+      .solution-card ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .problem-card li,
+      .solution-card li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .problem-card i {
+        color: #e53e3e;
+        margin-right: 0.8rem;
+        margin-top: 0.2rem;
+      }
+
+      .solution-card i {
+        color: var(--primary-green);
+        margin-right: 0.8rem;
+        margin-top: 0.2rem;
+      }
+
+      /* How It Works Section */
+      .step-card {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .step-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .step-icon {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(46, 139, 87, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--primary-green);
+        font-size: 1.8rem;
+      }
+
+      .step-card h4 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+      }
+
+      .step-card p {
+        color: var(--text-light);
+      }
+
+      /* Providers Section */
+      .providers-section {
+        background-color: var(--light-color);
+      }
+
+      .provider-card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .provider-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .provider-image {
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .rating {
+        color: #f6ad55;
+      }
+
+      .btn-view-menu {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-view-menu:hover {
+        background-color: var(--primary-light);
+      }
+
+      /* Plans Section */
+      .plan-card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .plan-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .plan-header {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .plan-popular {
+        transform: scale(1.02);
+        border: 2px solid var(--secondary-teal);
+      }
+
+      .badge-popular {
+        background-color: var(--secondary-teal);
+      }
+
+      /* Testimonials */
+      .testimonials-section {
+        background-color: white;
+      }
+
+      .testimonial-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin: 1rem;
+        height: 100%;
+      }
+
+      .testimonial-icon {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(46, 139, 87, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: var(--primary-green);
+        font-size: 1.5rem;
+      }
+
+      /* Why Choose Us */
+      .feature-card {
+        text-align: center;
+        padding: 2rem 1rem;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-green);
+        margin-bottom: 1rem;
+      }
+
+      /* Impact Section */
+      .impact-section {
+        background-color: var(--light-color);
+      }
+
+      .counter-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-green);
+      }
+
+      /* Newsletter */
+      .newsletter-section {
+        background-color: var(--primary-green);
+        color: white;
+      }
+
+      .newsletter-input {
+        padding: 0.9rem 1.2rem;
+        border: none;
+        border-radius: 4px 0 0 4px;
+        width: 70%;
+      }
+
+      .newsletter-btn {
+        padding: 0.9rem 1.5rem;
+        border: none;
+        background: var(--secondary-teal);
+        color: white;
+        border-radius: 0 4px 4px 0;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .newsletter-btn:hover {
+        background-color: #1a9c96;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+      }
+
+      .social-links a {
+        color: #a0aec0;
+        font-size: 1.2rem;
+        margin-right: 1rem;
+        transition: color 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: var(--primary-light);
+      }
+
+      /* Back to Top */
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--primary-green);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-to-top.show {
+        opacity: 1;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .btn-hero-primary,
+        .btn-hero-secondary {
+          display: block;
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .plan-popular {
+          transform: none;
+        }
+
+        .newsletter-input {
+          width: 100%;
+          border-radius: 4px;
+          margin-bottom: 0.5rem;
+        }
+
+        .newsletter-btn {
+          width: 100%;
+          border-radius: 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-utensils me-2"></i>Smart Tiffin
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./about.html">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#how-it-works">How It Works</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#plans">Menu / Plans</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#providers">Become a Chef</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./contact.html">Contact Us</a>
+            </li>
+          </ul>
+
+          <div class="navbar-nav">
+            <a class="nav-link btn btn-login me-2" href="#">Login</a>
+            <a class="nav-link btn btn-signup" href="#">Sign Up</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-8" data-aos="fade-right">
+            <h1 class="hero-title">
+              Healthy Home-Cooked Meals Delivered to Your Doorstep
+            </h1>
+            <p class="hero-subtitle">
+              Connecting Homemakers with Hungry Hearts – Affordable, Fresh, and
+              Delicious Tiffins Every Day.
+            </p>
+            <div class="hero-buttons">
+              <a href="#plans" class="btn btn-hero-primary">Order Now</a>
+              <a href="#providers" class="btn btn-hero-secondary"
+                >Become a Tiffin Partner</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section
+      id="problem-solution"
+      class="section-padding problem-solution-section"
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4" data-aos="fade-right">
+            <div class="problem-card">
+              <h3 class="mb-4">The Problem</h3>
+              <ul>
+                <li>
+                  <i class="fas fa-times-circle"></i> Students and professionals
+                  eating unhealthy fast food daily
+                </li>
+                <li>
+                  <i class="fas fa-times-circle"></i> Lack of time to cook
+                  nutritious meals
+                </li>
+                <li>
+                  <i class="fas fa-times-circle"></i> Expensive restaurant meals
+                  affecting budgets
+                </li>
+                <li>
+                  <i class="fas fa-times-circle"></i> Compromising health due to
+                  busy schedules
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4" data-aos="fade-left">
+            <div class="solution-card">
+              <h3 class="mb-4">Our Solution</h3>
+              <ul>
+                <li>
+                  <i class="fas fa-check-circle"></i> Home-cooked, hygienic
+                  meals delivered daily
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Affordable subscription
+                  plans for everyone
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Verified homemakers
+                  ensuring quality and taste
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Healthy eating made
+                  convenient and accessible
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section-padding bg-white">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          How It Works
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Get your healthy meals in 3 simple steps
+        </p>
+
+        <div class="row g-4">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="step-card">
+              <div class="step-icon">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <h4>Choose Your Plan</h4>
+              <p>
+                Select from Daily, Weekly, or Monthly subscription plans that
+                suit your needs and budget.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="step-card">
+              <div class="step-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <h4>Get Fresh Meals Delivered</h4>
+              <p>
+                Receive fresh, home-cooked meals prepared by verified homemakers
+                right at your doorstep.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="step-card">
+              <div class="step-icon">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <h4>Enjoy and Track</h4>
+              <p>
+                Enjoy delicious, healthy food and track your orders through our
+                easy-to-use platform.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Providers Section -->
+    <section id="providers" class="section-padding providers-section">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Our Featured Tiffin Providers
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Meet the talented homemakers behind your delicious meals
+        </p>
+
+        <div class="row g-4">
+          <!-- Provider 1 -->
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="card provider-card">
+              <img
+                src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-4.0.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top provider-image"
+                alt="Provider 1"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Mrs. Sharma's Kitchen</h5>
+                <p class="card-text text-muted">Mumbai, Maharashtra</p>
+                <p class="card-text">
+                  Specializes in North Indian and Gujarati Cuisine
+                </p>
+                <div class="rating mb-3">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                  <span class="ms-1">4.5/5</span>
+                </div>
+                <a href="#" class="btn btn-view-menu w-100"
+                  >View Profile and Menu</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 2 -->
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="card provider-card">
+              <img
+                src="https://images.unsplash.com/photo-1548142813-348fbc78914a?ixlib=rb-4.0.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top provider-image"
+                alt="Provider 2"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Geeta's Home Food</h5>
+                <p class="card-text text-muted">Delhi, NCR</p>
+                <p class="card-text">
+                  Expert in South Indian and Healthy Diet Meals
+                </p>
+                <div class="rating mb-3">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="ms-1">5.0/5</span>
+                </div>
+                <a href="#" class="btn btn-view-menu w-100"
+                  >View Profile and Menu</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 3 -->
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="card provider-card">
+              <img
+                src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?ixlib=rb-4.0.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top provider-image"
+                alt="Provider 3"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Priya's Traditional Meals</h5>
+                <p class="card-text text-muted">Bangalore, Karnataka</p>
+                <p class="card-text">
+                  Authentic Bengali and Continental Dishes
+                </p>
+                <div class="rating mb-3">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <span class="ms-1">4.0/5</span>
+                </div>
+                <a href="#" class="btn btn-view-menu w-100"
+                  >View Profile and Menu</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+          <a href="#" class="btn btn-outline-success btn-lg"
+            >View All Providers</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Subscription Plans Section -->
+    <section id="plans" class="section-padding bg-white">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Choose Your Perfect Plan
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Flexible subscription options for every need
+        </p>
+
+        <div class="row g-4">
+          <!-- Daily Plan -->
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card plan-card">
+              <div class="plan-header">
+                <h4>Daily Plan</h4>
+                <h2>₹199<span class="fs-6">/day</span></h2>
+                <p>Perfect for trying out</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>2 Meals per
+                    day
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Flexible menu
+                    choices
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Free delivery
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-times text-muted me-2"></i>No discount
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-times text-muted me-2"></i>No priority
+                    support
+                  </li>
+                </ul>
+                <a href="#" class="btn btn-outline-success w-100 mt-3"
+                  >Subscribe Now</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly Plan -->
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card plan-card plan-popular">
+              <div class="plan-header position-relative">
+                <span
+                  class="badge bg-teal position-absolute top-0 start-50 translate-middle px-3 py-2"
+                  >Most Popular</span
+                >
+                <h4>Weekly Plan</h4>
+                <h2>₹1,199<span class="fs-6">/week</span></h2>
+                <p>Save ₹194 weekly</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>2 Meals per
+                    day
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Flexible menu
+                    choices
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Free delivery
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>10% discount
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Priority
+                    support
+                  </li>
+                </ul>
+                <a href="#" class="btn btn-success w-100 mt-3">Subscribe Now</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monthly Plan -->
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card plan-card">
+              <div class="plan-header">
+                <h4>Monthly Plan</h4>
+                <h2>₹4,499<span class="fs-6">/month</span></h2>
+                <p>Save ₹1,441 monthly</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>2 Meals per
+                    day
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Flexible menu
+                    choices
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Free delivery
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>15% discount
+                  </li>
+                  <li class="mb-2">
+                    <i class="fas fa-check text-success me-2"></i>Premium
+                    support
+                  </li>
+                </ul>
+                <a href="#" class="btn btn-outline-success w-100 mt-3"
+                  >Subscribe Now</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section-padding testimonials-section">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          What Our Customers Say
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Real stories from our happy community
+        </p>
+
+        <div class="row">
+          <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="testimonial-card text-center">
+              <div class="testimonial-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="rating mb-3">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="mb-3">
+                "As a working professional, Smart Tiffin has been a lifesaver!
+                The food is delicious, healthy, and affordable. Mrs. Sharma's
+                kitchen feels like home!"
+              </p>
+              <h5>Rajesh Kumar</h5>
+              <p class="text-muted">Software Engineer, Mumbai</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="testimonial-card text-center">
+              <div class="testimonial-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="rating mb-3">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <p class="mb-3">
+                "Being a student away from home, I was missing home-cooked food.
+                Smart Tiffin brought that comfort to my hostel room. Highly
+                recommended!"
+              </p>
+              <h5>Priya Singh</h5>
+              <p class="text-muted">College Student, Delhi</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="testimonial-card text-center">
+              <div class="testimonial-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="rating mb-3">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="mb-3">
+                "The variety and quality of meals is exceptional. I've been a
+                subscriber for 6 months and couldn't be happier with the
+                service!"
+              </p>
+              <h5>Amit Patel</h5>
+              <p class="text-muted">Business Owner, Bangalore</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section-padding bg-light">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Why Choose Smart Tiffin?
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          We're committed to your health and satisfaction
+        </p>
+
+        <div class="row g-4">
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-user-check"></i>
+              </div>
+              <h5>Home-Cooked by Verified Moms</h5>
+              <p class="text-muted">
+                Authentic home-style cooking by experienced homemakers
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h5>Hygiene and Quality Checked</h5>
+              <p class="text-muted">
+                Rigorous quality checks ensuring highest hygiene standards
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-rupee-sign"></i>
+              </div>
+              <h5>Affordable Subscriptions</h5>
+              <p class="text-muted">
+                Budget-friendly plans without compromising on quality
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <h5>Doorstep Delivery</h5>
+              <p class="text-muted">
+                Timely delivery right to your location, fresh and hot
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="section-padding impact-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right">
+            <h2 class="section-title">Our Impact</h2>
+            <p class="lead mb-4">
+              Empowering homemakers while serving healthy meals to communities
+              across India
+            </p>
+            <div class="row">
+              <div class="col-4 text-center">
+                <h3 class="counter-number">1000+</h3>
+                <p>Homemakers Empowered</p>
+              </div>
+              <div class="col-4 text-center">
+                <h3 class="counter-number">50,000+</h3>
+                <p>Meals Delivered</p>
+              </div>
+              <div class="col-4 text-center">
+                <h3 class="counter-number">25+</h3>
+                <p>Cities Served</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left">
+            <img
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.1&auto=format&fit=crop&w=500&q=80"
+              class="img-fluid rounded"
+              alt="Empowering Women"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="section-padding newsletter-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center" data-aos="fade-up">
+            <h2 class="mb-3">Join Our Smart Tiffin Community</h2>
+            <p class="mb-4">
+              Get exclusive offers, health tips, and updates directly in your
+              inbox!
+            </p>
+            <div class="d-flex justify-content-center">
+              <input
+                type="email"
+                class="form-control newsletter-input"
+                placeholder="Enter your email address"
+              />
+              <button class="btn newsletter-btn">Join Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-5 pb-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">
+              <i class="fas fa-utensils me-2"></i>Smart Tiffin
+            </h4>
+            <p class="mb-3">
+              Connecting homemakers with food lovers for healthy, affordable,
+              and delicious home-cooked meals.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 mb-4">
+            <h5 class="mb-3">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./index.html"
+                  class="text-white-50 text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./about.html"
+                  class="text-white-50 text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >How It Works</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none">Plans</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Support</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Help Center</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Terms of Service</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none">FAQ</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Contact Info</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2"></i>info@smarttiffin.com
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-phone me-2"></i>+91 98765 43210
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2"></i>Mumbai, India
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="bg-white" />
+
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-0">Powered by VIP Tech Visionary</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+      });
+
+      // Back to top button
+      const backToTop = document.querySelector(".back-to-top");
+
+      window.addEventListener("scroll", () => {
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add("show");
+        } else {
+          backToTop.classList.remove("show");
+        }
+      });
+
+      backToTop.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.style.padding = "0.5rem 0";
+          navbar.style.background = "rgba(255, 255, 255, 0.95)";
+        } else {
+          navbar.style.padding = "1rem 0";
+          navbar.style.background = "white";
+        }
+      });
+
+      // Counter animation for impact section
+      function animateCounter(element, target, duration) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            element.textContent = target + "+";
+            clearInterval(timer);
+          } else {
+            element.textContent = Math.floor(start) + "+";
+          }
+        }, 16);
+      }
+
+      // Animate counters when in viewport
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counters = document.querySelectorAll(".counter-number");
+            counters.forEach((counter) => {
+              const target = parseInt(counter.textContent);
+              animateCounter(counter, target, 2000);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+
+      const impactSection = document.querySelector(".impact-section");
+      if (impactSection) {
+        observer.observe(impactSection);
+      }
+    </script>
+  </body>
+</html>
