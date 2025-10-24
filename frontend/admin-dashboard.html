@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Smart Tiffin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+        --accent-orange: #ff6b35;
+        --sidebar-width: 260px;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark-color);
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        padding-top: 20px;
+      }
+
+      .sidebar-brand {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 20px;
+      }
+
+      .sidebar-brand h3 {
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-bottom: 0;
+      }
+
+      .sidebar-menu {
+        padding: 0 15px;
+      }
+
+      .sidebar-menu .nav-link {
+        color: var(--dark-color);
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-menu .nav-link:hover,
+      .sidebar-menu .nav-link.active {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green);
+      }
+
+      .sidebar-menu .nav-link i {
+        width: 24px;
+        margin-right: 10px;
+        text-align: center;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: var(--sidebar-width);
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+
+      /* Header */
+      .header {
+        background-color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-title h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0;
+        color: var(--dark-color);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .notification-icon,
+      .profile-dropdown {
+        position: relative;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--accent-orange);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-toggle {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-light);
+        display: none;
+      }
+
+      /* Dashboard Cards */
+      .dashboard-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+
+      .card-icon.customers {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green);
+      }
+
+      .card-icon.cooks {
+        background-color: rgba(255, 107, 53, 0.1);
+        color: var(--accent-orange);
+      }
+
+      .card-icon.subscriptions {
+        background-color: rgba(66, 153, 225, 0.1);
+        color: #4299e1;
+      }
+
+      .card-icon.revenue {
+        background-color: rgba(159, 122, 234, 0.1);
+        color: #9f7aea;
+      }
+
+      .card-icon.applications {
+        background-color: rgba(237, 137, 54, 0.1);
+        color: #ed8936;
+      }
+
+      .card-icon.orders {
+        background-color: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+      }
+
+      .card-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .card-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      /* Table Styles */
+      .table-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .table-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .table-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      .table th {
+        border-top: none;
+        font-weight: 600;
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-active {
+        background-color: #f0fff4;
+        color: #38a169;
+      }
+
+      .status-pending {
+        background-color: #fef5e7;
+        color: #d69e2e;
+      }
+
+      .status-inactive {
+        background-color: #fed7d7;
+        color: #e53e3e;
+      }
+
+      .status-approved {
+        background-color: #ebf8ff;
+        color: #3182ce;
+      }
+
+      .plan-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        background-color: #ebf8ff;
+        color: #3182ce;
+      }
+
+      /* Chart Container */
+      .chart-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        height: 300px;
+      }
+
+      /* Form Styles */
+      .form-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-section-header {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .form-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      /* Footer */
+      footer {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-top: 20px;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .btn-toggle {
+          display: block;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .header-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <h3><i class="fas fa-utensils me-2"></i>Smart Tiffin</h3>
+        <small class="text-muted">Admin Dashboard</small>
+      </div>
+
+      <div class="sidebar-menu">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#dashboard">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#customers">
+              <i class="fas fa-users"></i> Customers
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#cooks">
+              <i class="fas fa-user-chef"></i> Cooks
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#subscriptions">
+              <i class="fas fa-clipboard-list"></i> Subscriptions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#payments">
+              <i class="fas fa-credit-card"></i> Payments
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#reports">
+              <i class="fas fa-chart-bar"></i> Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#settings">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+          </li>
+          <li class="nav-item mt-4">
+            <a class="nav-link text-danger" href="#logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Dashboard Overview</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="notification-icon">
+            <i class="fas fa-bell fa-lg text-muted"></i>
+            <span class="notification-badge">5</span>
+          </div>
+          <div class="profile-dropdown">
+            <div class="dropdown">
+              <a
+                href="#"
+                class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                id="profileDropdown"
+                data-bs-toggle="dropdown"
+              >
+                <img
+                  src="https://ui-avatars.com/api/?name=Admin+User&background=2E8B57&color=fff"
+                  alt="Profile"
+                  class="rounded-circle"
+                  width="32"
+                  height="32"
+                />
+                <span class="ms-2 d-none d-sm-inline">Admin User</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#settings"
+                    ><i class="fas fa-user me-2"></i>Profile</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#settings"
+                    ><i class="fas fa-cog me-2"></i>Settings</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#logout"
+                    ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Overview -->
+      <section id="dashboard">
+        <div class="row">
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon customers">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="card-value">1,248</div>
+              <div class="card-label">Total Customers</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon cooks">
+                <i class="fas fa-user-chef"></i>
+              </div>
+              <div class="card-value">86</div>
+              <div class="card-label">Active Cooks</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon subscriptions">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div class="card-value">942</div>
+              <div class="card-label">Active Subscriptions</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon revenue">
+                <i class="fas fa-rupee-sign"></i>
+              </div>
+              <div class="card-value">₹4.2L</div>
+              <div class="card-label">Revenue This Month</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon applications">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="card-value">12</div>
+              <div class="card-label">Pending Applications</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="dashboard-card">
+              <div class="card-icon orders">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <div class="card-value">2,847</div>
+              <div class="card-label">Total Orders Today</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row">
+          <div class="col-md-8">
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="chart-container">
+              <canvas id="subscriptionChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="table-card">
+              <div class="table-card-header">
+                <h3 class="table-card-title">Recent Customers</h3>
+                <a href="#customers" class="btn btn-sm btn-outline-primary"
+                  >View All</a
+                >
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Rajesh Kumar</td>
+                      <td>rajesh@example.com</td>
+                      <td>
+                        <span class="status-badge status-active">Active</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Priya Sharma</td>
+                      <td>priya@example.com</td>
+                      <td>
+                        <span class="status-badge status-active">Active</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Anil Patel</td>
+                      <td>anil@example.com</td>
+                      <td>
+                        <span class="status-badge status-inactive"
+                          >Inactive</span
+                        >
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="table-card">
+              <div class="table-card-header">
+                <h3 class="table-card-title">Pending Applications</h3>
+                <a href="#cooks" class="btn btn-sm btn-outline-primary"
+                  >View All</a
+                >
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Cuisine</th>
+                      <th>Applied On</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sunita Reddy</td>
+                      <td>South Indian</td>
+                      <td>15 May 2025</td>
+                      <td>
+                        <button class="btn btn-sm btn-success">Approve</button>
+                        <button class="btn btn-sm btn-danger">Reject</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Vikram Singh</td>
+                      <td>North Indian</td>
+                      <td>14 May 2025</td>
+                      <td>
+                        <button class="btn btn-sm btn-success">Approve</button>
+                        <button class="btn btn-sm btn-danger">Reject</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Meera Joshi</td>
+                      <td>Continental</td>
+                      <td>14 May 2025</td>
+                      <td>
+                        <button class="btn btn-sm btn-success">Approve</button>
+                        <button class="btn btn-sm btn-danger">Reject</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Customers Management Section -->
+      <section id="customers" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Customers Management</h2>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary active">All</button>
+            <button class="btn btn-sm btn-outline-secondary">Active</button>
+            <button class="btn btn-sm btn-outline-secondary">Inactive</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">All Customers</h3>
+            <div class="d-flex gap-2">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search customers..."
+              />
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-download me-1"></i> Export
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Subscription Status</th>
+                  <th>Total Orders</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Rajesh+Kumar&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Rajesh Kumar
+                    </div>
+                  </td>
+                  <td>rajesh@example.com</td>
+                  <td>+91 98765 43210</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>42</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Block
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Priya+Sharma&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Priya Sharma
+                    </div>
+                  </td>
+                  <td>priya@example.com</td>
+                  <td>+91 98765 43211</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>28</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Block
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Anil+Patel&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Anil Patel
+                    </div>
+                  </td>
+                  <td>anil@example.com</td>
+                  <td>+91 98765 43212</td>
+                  <td>
+                    <span class="status-badge status-inactive">Inactive</span>
+                  </td>
+                  <td>15</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                    <button class="btn btn-sm btn-outline-success">
+                      Unblock
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Previous</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Cooks Management Section -->
+      <section id="cooks" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Cooks Management</h2>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary active">All</button>
+            <button class="btn btn-sm btn-outline-secondary">Pending</button>
+            <button class="btn btn-sm btn-outline-secondary">Approved</button>
+            <button class="btn btn-sm btn-outline-secondary">Rejected</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Cook Applications & Profiles</h3>
+            <div class="d-flex gap-2">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search cooks..."
+              />
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Cuisine</th>
+                  <th>Verification Status</th>
+                  <th>Earnings</th>
+                  <th>Rating</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Sunita+Reddy&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Sunita Reddy
+                    </div>
+                  </td>
+                  <td>South Indian</td>
+                  <td>
+                    <span class="status-badge status-pending">Pending</span>
+                  </td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-success">Approve</button>
+                    <button class="btn btn-sm btn-danger">Reject</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Vikram+Singh&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Vikram Singh
+                    </div>
+                  </td>
+                  <td>North Indian</td>
+                  <td>
+                    <span class="status-badge status-pending">Pending</span>
+                  </td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-success">Approve</button>
+                    <button class="btn btn-sm btn-danger">Reject</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Chef+Priya&background=2E8B57&color=fff"
+                        alt="Avatar"
+                        class="rounded-circle me-2"
+                        width="32"
+                        height="32"
+                      />
+                      Chef Priya
+                    </div>
+                  </td>
+                  <td>Multiple Cuisines</td>
+                  <td>
+                    <span class="status-badge status-approved">Approved</span>
+                  </td>
+                  <td>₹1,24,500</td>
+                  <td>4.7 ★</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Suspend
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Subscriptions Management Section -->
+      <section id="subscriptions" class="d-none">
+        <h2 class="mb-4">Subscriptions Management</h2>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Active Subscriptions</h3>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary active">
+                All
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">Daily</button>
+              <button class="btn btn-sm btn-outline-secondary">Weekly</button>
+              <button class="btn btn-sm btn-outline-secondary">Monthly</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Customer Name</th>
+                  <th>Plan Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Meal Frequency</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rajesh Kumar</td>
+                  <td><span class="plan-badge">Monthly</span></td>
+                  <td>10 May 2025</td>
+                  <td>10 Jun 2025</td>
+                  <td>2 meals/day</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Pause
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Priya Sharma</td>
+                  <td><span class="plan-badge">Weekly</span></td>
+                  <td>12 May 2025</td>
+                  <td>19 May 2025</td>
+                  <td>1 meal/day</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Pause
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Anil Patel</td>
+                  <td><span class="plan-badge">Daily</span></td>
+                  <td>15 May 2025</td>
+                  <td>15 May 2025</td>
+                  <td>2 meals/day</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-warning">
+                      Pause
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payments Section -->
+      <section id="payments" class="d-none">
+        <h2 class="mb-4">Payments & Transactions</h2>
+
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="dashboard-card text-center">
+              <div class="card-value">₹4.2L</div>
+              <div class="card-label">Total Revenue</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card text-center">
+              <div class="card-value">₹3.1L</div>
+              <div class="card-label">Cook Payouts</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card text-center">
+              <div class="card-value">₹1.1L</div>
+              <div class="card-label">Platform Earnings</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card text-center">
+              <div class="card-value">98.2%</div>
+              <div class="card-label">Success Rate</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Recent Transactions</h3>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary active">
+                All
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">Today</button>
+              <button class="btn btn-sm btn-outline-secondary">
+                This Week
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">
+                This Month
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Cook</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>15 May 2025</td>
+                  <td>Rajesh Kumar</td>
+                  <td>Chef Priya</td>
+                  <td>₹3,600</td>
+                  <td>Subscription</td>
+                  <td>
+                    <span class="status-badge status-active">Completed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>15 May 2025</td>
+                  <td>Priya Sharma</td>
+                  <td>Chef Priya</td>
+                  <td>₹700</td>
+                  <td>Subscription</td>
+                  <td>
+                    <span class="status-badge status-active">Completed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>14 May 2025</td>
+                  <td>Anil Patel</td>
+                  <td>Chef Ramesh</td>
+                  <td>₹200</td>
+                  <td>One-time</td>
+                  <td>
+                    <span class="status-badge status-active">Completed</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports Section -->
+      <section id="reports" class="d-none">
+        <h2 class="mb-4">Reports & Analytics</h2>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="chart-container">
+              <canvas id="subscribersChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="chart-container">
+              <canvas id="cookActivityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Platform Performance</h3>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-download me-1"></i> Export PDF
+              </button>
+              <button class="btn btn-sm btn-outline-success">
+                <i class="fas fa-file-csv me-1"></i> Export CSV
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="p-3 border rounded mb-3">
+                <h5>Most Popular Meal Plans</h5>
+                <ul class="list-unstyled mb-0">
+                  <li>1. North Indian Thali (42%)</li>
+                  <li>2. South Indian Combo (28%)</li>
+                  <li>3. Special Thali (18%)</li>
+                  <li>4. Diet Meal Plan (12%)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded mb-3">
+                <h5>Top Performing Cooks</h5>
+                <ul class="list-unstyled mb-0">
+                  <li>1. Chef Priya (₹1.2L)</li>
+                  <li>2. Chef Ramesh (₹98K)</li>
+                  <li>3. Chef Sunita (₹76K)</li>
+                  <li>4. Chef Vikram (₹54K)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded mb-3">
+                <h5>Customer Satisfaction</h5>
+                <ul class="list-unstyled mb-0">
+                  <li>Average Rating: 4.7/5</li>
+                  <li>Response Rate: 92%</li>
+                  <li>Repeat Order Rate: 78%</li>
+                  <li>Complaint Resolution: 96%</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="settings" class="d-none">
+        <h2 class="mb-4">Admin Settings</h2>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Admin Profile</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="Admin User" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  value="admin@smarttiffin.com"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="+91 98765 43210"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="Super Administrator"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Update Profile</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">System Settings</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Platform Commission (%)</label>
+                <input type="number" class="form-control" value="20" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Auto-approve Cook Applications</label>
+                <select class="form-select">
+                  <option>No</option>
+                  <option selected>Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Minimum Cook Rating</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  value="4.0"
+                  step="0.1"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Customer Support Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  value="support@smarttiffin.com"
+                />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Save Settings</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Notifications</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" checked />
+                <label class="form-check-label">New Cook Applications</label>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" checked />
+                <label class="form-check-label">Payment Alerts</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" checked />
+                <label class="form-check-label">System Updates</label>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" />
+                <label class="form-check-label">Marketing Notifications</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Save Preferences</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Change Password</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Change Password</button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-end">
+            <a href="#" class="text-decoration-none me-3">Privacy Policy</a>
+            <a href="#" class="text-decoration-none me-3">Terms of Service</a>
+            <a href="#" class="text-decoration-none">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Initialize sidebar toggle
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Navigation between sections
+      document.querySelectorAll(".sidebar-menu .nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          document
+            .querySelectorAll(".sidebar-menu .nav-link")
+            .forEach((item) => {
+              item.classList.remove("active");
+            });
+
+          // Add active class to clicked link
+          this.classList.add("active");
+
+          // Hide all sections
+          document.querySelectorAll("section").forEach((section) => {
+            section.classList.add("d-none");
+          });
+
+          // Show the target section
+          const targetId = this.getAttribute("href").substring(1);
+          document.getElementById(targetId).classList.remove("d-none");
+
+          // Update header title
+          const headerTitle = document.querySelector(".header-title h1");
+          switch (targetId) {
+            case "dashboard":
+              headerTitle.textContent = "Dashboard Overview";
+              break;
+            case "customers":
+              headerTitle.textContent = "Customers Management";
+              break;
+            case "cooks":
+              headerTitle.textContent = "Cooks Management";
+              break;
+            case "subscriptions":
+              headerTitle.textContent = "Subscriptions Management";
+              break;
+            case "payments":
+              headerTitle.textContent = "Payments & Transactions";
+              break;
+            case "reports":
+              headerTitle.textContent = "Reports & Analytics";
+              break;
+            case "settings":
+              headerTitle.textContent = "Admin Settings";
+              break;
+          }
+
+          // Close sidebar on mobile after selection
+          if (window.innerWidth < 992) {
+            document.querySelector(".sidebar").classList.remove("active");
+          }
+        });
+      });
+
+      // Initialize charts
+      const revenueCtx = document
+        .getElementById("revenueChart")
+        .getContext("2d");
+      const revenueChart = new Chart(revenueCtx, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Monthly Revenue (₹)",
+              data: [320000, 350000, 380000, 400000, 420000, 0],
+              borderColor: "#2E8B57",
+              backgroundColor: "rgba(46, 139, 87, 0.1)",
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return "₹" + value / 1000 + "K";
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const subscriptionCtx = document
+        .getElementById("subscriptionChart")
+        .getContext("2d");
+      const subscriptionChart = new Chart(subscriptionCtx, {
+        type: "doughnut",
+        data: {
+          labels: ["Daily", "Weekly", "Monthly"],
+          datasets: [
+            {
+              data: [180, 260, 502],
+              backgroundColor: ["#2E8B57", "#4299E1", "#9F7AEA"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      });
+
+      const subscribersCtx = document
+        .getElementById("subscribersChart")
+        .getContext("2d");
+      const subscribersChart = new Chart(subscribersCtx, {
+        type: "bar",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          datasets: [
+            {
+              label: "Total Subscribers",
+              data: [650, 720, 810, 890, 942],
+              backgroundColor: "#2E8B57",
+              borderColor: "#2E8B57",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      const cookActivityCtx = document
+        .getElementById("cookActivityChart")
+        .getContext("2d");
+      const cookActivityChart = new Chart(cookActivityCtx, {
+        type: "bar",
+        data: {
+          labels: [
+            "Chef Priya",
+            "Chef Ramesh",
+            "Chef Sunita",
+            "Chef Vikram",
+            "Others",
+          ],
+          datasets: [
+            {
+              label: "Monthly Earnings (₹)",
+              data: [124500, 98000, 76000, 54000, 67500],
+              backgroundColor: "#FF6B35",
+              borderColor: "#FF6B35",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return "₹" + value / 1000 + "K";
+                },
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Smart Tiffin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header Styles */
+      .signup-header {
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 1rem 0;
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-green) !important;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        color: var(--dark-color) !important;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-green) !important;
+      }
+
+      /* Signup Container */
+      .signup-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+      }
+
+      .signup-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        padding: 2.5rem;
+      }
+
+      .signup-logo {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .signup-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+      }
+
+      .signup-subtitle {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+      }
+
+      /* Form Styles */
+      .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+      }
+
+      .form-control {
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.1);
+      }
+
+      .form-text {
+        font-size: 0.85rem;
+        color: var(--text-light);
+      }
+
+      /* Password Strength Indicator */
+      .password-strength {
+        height: 4px;
+        background-color: var(--border-light);
+        border-radius: 2px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+      }
+
+      .password-strength-bar {
+        height: 100%;
+        width: 0%;
+        transition: all 0.3s ease;
+      }
+
+      .strength-weak {
+        background-color: #e53e3e;
+        width: 25%;
+      }
+
+      .strength-fair {
+        background-color: #d69e2e;
+        width: 50%;
+      }
+
+      .strength-good {
+        background-color: #38a169;
+        width: 75%;
+      }
+
+      .strength-strong {
+        background-color: #2e8b57;
+        width: 100%;
+      }
+
+      .strength-text {
+        font-size: 0.85rem;
+        text-align: right;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Button Styles */
+      .btn-signup {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 0.9rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-signup:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-2px);
+      }
+
+      /* Social Login Section */
+      .social-section {
+        margin: 1.5rem 0;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .divider-text {
+        padding: 0 1rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .social-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .btn-social {
+        flex: 1;
+        padding: 0.7rem;
+        border: 1px solid var(--border-light);
+        background-color: white;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-social:hover {
+        background-color: var(--light-color);
+      }
+
+      .btn-google {
+        color: #db4437;
+      }
+
+      .btn-facebook {
+        color: #4267b2;
+      }
+
+      /* Login Link */
+      .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+      }
+
+      .login-link a {
+        color: var(--primary-green);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .login-link a:hover {
+        color: var(--primary-light);
+      }
+
+      /* Footer Styles */
+      .signup-footer {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 1.5rem 0;
+        margin-top: auto;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .footer-link {
+        color: #a0aec0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-link:hover {
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 576px) {
+        .signup-card {
+          padding: 2rem 1.5rem;
+        }
+
+        .social-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="signup-header">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" href="index.html">
+            <i class="fas fa-utensils me-2"></i>Smart Tiffin
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contact.html">Contact</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Signup Container -->
+    <div class="signup-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="signup-card">
+              <div class="signup-logo">
+                <i class="fas fa-utensils fa-2x text-success"></i>
+              </div>
+              <h1 class="signup-title">Create Your Account</h1>
+              <p class="signup-subtitle">
+                Join thousands enjoying healthy home-cooked meals
+              </p>
+
+              <!-- Signup Form -->
+              <form id="signupForm">
+                <!-- Full Name Field -->
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                  />
+                  <div class="form-text">
+                    We'll never share your email with anyone else.
+                  </div>
+                </div>
+
+                <!-- Phone Field -->
+                <div class="mb-3">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+
+                <!-- Password Field -->
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Create a strong password"
+                    required
+                  />
+
+                  <!-- Password Strength Indicator -->
+                  <div class="password-strength mt-2">
+                    <div
+                      class="password-strength-bar"
+                      id="passwordStrengthBar"
+                    ></div>
+                  </div>
+                  <div class="strength-text" id="passwordStrengthText">
+                    Password strength
+                  </div>
+
+                  <div class="form-text">
+                    Use 8+ characters with a mix of letters, numbers & symbols.
+                  </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    placeholder="Confirm your password"
+                    required
+                  />
+                  <div class="form-text" id="passwordMatchText"></div>
+                </div>
+
+                <!-- Address Field (Optional) -->
+                <div class="mb-3">
+                  <label for="address" class="form-label"
+                    >Delivery Address
+                    <span class="text-muted">(Optional)</span></label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="address"
+                    rows="2"
+                    placeholder="Enter your delivery address (can add later)"
+                  ></textarea>
+                  <div class="form-text">
+                    You can add or update your address later in your profile.
+                  </div>
+                </div>
+
+                <!-- Terms Agreement -->
+                <div class="mb-3 form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="agreeTerms"
+                    required
+                  />
+                  <label class="form-check-label" for="agreeTerms">
+                    I agree to the
+                    <a href="#" class="text-success">Terms of Service</a> and
+                    <a href="#" class="text-success">Privacy Policy</a>
+                  </label>
+                </div>
+
+                <!-- Signup Button -->
+                <button type="submit" class="btn btn-signup">
+                  Create Account
+                </button>
+              </form>
+
+              <!-- Social Login Section -->
+              <div class="social-section">
+                <div class="divider">
+                  <span class="divider-text">Or sign up with</span>
+                </div>
+
+                <div class="social-buttons">
+                  <button type="button" class="btn btn-social btn-google">
+                    <i class="fab fa-google"></i>
+                    Google
+                  </button>
+                  <button type="button" class="btn btn-social btn-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                  </button>
+                </div>
+              </div>
+
+              <!-- Login Link -->
+              <div class="login-link">
+                <p>
+                  Already have an account? <a href="login.html">Login here</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="signup-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="footer-links mb-2">
+              <a href="#" class="footer-link">Privacy Policy</a>
+              <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const signupForm = document.getElementById("signupForm");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const passwordStrengthBar = document.getElementById(
+          "passwordStrengthBar"
+        );
+        const passwordStrengthText = document.getElementById(
+          "passwordStrengthText"
+        );
+        const passwordMatchText = document.getElementById("passwordMatchText");
+
+        // Password Strength Checker
+        passwordInput.addEventListener("input", function () {
+          const password = this.value;
+          let strength = 0;
+          let text = "";
+
+          // Check password length
+          if (password.length >= 8) strength += 25;
+
+          // Check for lowercase letters
+          if (/[a-z]/.test(password)) strength += 25;
+
+          // Check for uppercase letters
+          if (/[A-Z]/.test(password)) strength += 25;
+
+          // Check for numbers and special characters
+          if (/[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password))
+            strength += 25;
+
+          // Update strength bar and text
+          passwordStrengthBar.className = "password-strength-bar";
+
+          if (strength <= 25) {
+            passwordStrengthBar.classList.add("strength-weak");
+            text = "Weak";
+          } else if (strength <= 50) {
+            passwordStrengthBar.classList.add("strength-fair");
+            text = "Fair";
+          } else if (strength <= 75) {
+            passwordStrengthBar.classList.add("strength-good");
+            text = "Good";
+          } else {
+            passwordStrengthBar.classList.add("strength-strong");
+            text = "Strong";
+          }
+
+          passwordStrengthText.textContent = text;
+          passwordStrengthText.className = "strength-text";
+
+          if (password.length > 0) {
+            if (strength <= 50) {
+              passwordStrengthText.classList.add("text-danger");
+            } else if (strength <= 75) {
+              passwordStrengthText.classList.add("text-warning");
+            } else {
+              passwordStrengthText.classList.add("text-success");
+            }
+          }
+        });
+
+        // Password Match Checker
+        confirmPasswordInput.addEventListener("input", function () {
+          const password = passwordInput.value;
+          const confirmPassword = this.value;
+
+          if (confirmPassword.length === 0) {
+            passwordMatchText.textContent = "";
+            return;
+          }
+
+          if (password === confirmPassword) {
+            passwordMatchText.textContent = "Passwords match";
+            passwordMatchText.className = "form-text text-success";
+          } else {
+            passwordMatchText.textContent = "Passwords do not match";
+            passwordMatchText.className = "form-text text-danger";
+          }
+        });
+
+        // Form submission
+        signupForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const fullName = document.getElementById("fullName").value;
+          const email = document.getElementById("email").value;
+          const phone = document.getElementById("phone").value;
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+          const address = document.getElementById("address").value;
+          const agreeTerms = document.getElementById("agreeTerms").checked;
+
+          // Validation
+          if (!agreeTerms) {
+            alert("Please agree to the Terms of Service and Privacy Policy.");
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            alert("Passwords do not match. Please check and try again.");
+            return;
+          }
+
+          if (password.length < 8) {
+            alert("Password must be at least 8 characters long.");
+            return;
+          }
+
+          // In a real application, this would send data to the server
+          // For demo purposes, we'll simulate a successful signup
+          simulateSignup();
+        });
+
+        // Social login buttons
+        document
+          .querySelector(".btn-google")
+          .addEventListener("click", function () {
+            alert("Google signup would be implemented here.");
+          });
+
+        document
+          .querySelector(".btn-facebook")
+          .addEventListener("click", function () {
+            alert("Facebook signup would be implemented here.");
+          });
+
+        // Simulate signup and redirect
+        function simulateSignup() {
+          // Show loading state
+          const signupBtn = document.querySelector(".btn-signup");
+          const originalText = signupBtn.textContent;
+          signupBtn.textContent = "Creating Account...";
+          signupBtn.disabled = true;
+
+          // Simulate API call delay
+          setTimeout(() => {
+            // Show success message
+            alert("Account created successfully! Redirecting to login...");
+
+            // Redirect to login page
+            window.location.href = "login.html";
+
+            // Reset button (in case redirect fails)
+            signupBtn.textContent = originalText;
+            signupBtn.disabled = false;
+          }, 2000);
+        }
+      });
+    </script>
+  </body>
+</html>

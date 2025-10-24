@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Become a Chef - Smart Tiffin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+        --accent-orange: #ff6b35;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark-color);
+        line-height: 1.6;
+      }
+
+      .section-padding {
+        padding: 80px 0;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        margin-bottom: 3rem;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        padding: 1rem 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        background-color: white;
+      }
+
+      .navbar-brand {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--primary-green) !important;
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        margin: 0 0.2rem;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+        color: var(--dark-color) !important;
+      }
+
+      .navbar-nav .nav-link:hover {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green) !important;
+      }
+
+      .navbar-nav .nav-link.active {
+        background-color: var(--primary-green);
+        color: white !important;
+      }
+
+      .btn-login {
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-login:hover {
+        background-color: var(--primary-green);
+        color: white;
+      }
+
+      .btn-signup {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn-signup:hover {
+        background-color: var(--primary-light);
+      }
+
+      /* Hero Section */
+      .chef-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-4.0.1&auto=format&fit=crop&w=1950&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0 100px;
+        position: relative;
+        text-align: center;
+      }
+
+      .chef-hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .chef-hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn-hero-primary {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-hero-primary:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-2px);
+      }
+
+      .btn-hero-secondary {
+        background-color: transparent;
+        border: 2px solid white;
+        color: white;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-hero-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Benefits Section */
+      .benefits-section {
+        background-color: var(--light-color);
+      }
+
+      .benefit-card {
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      .benefit-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .benefit-icon {
+        width: 80px;
+        height: 80px;
+        background-color: rgba(46, 139, 87, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--primary-green);
+        font-size: 2rem;
+      }
+
+      /* Process Section */
+      .process-section {
+        background-color: white;
+      }
+
+      .process-step {
+        text-align: center;
+        padding: 2rem 1rem;
+        position: relative;
+      }
+
+      .process-number {
+        width: 50px;
+        height: 50px;
+        background-color: var(--primary-green);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .process-connector {
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background-color: var(--border-light);
+        z-index: 1;
+      }
+
+      .process-step:last-child .process-connector {
+        display: none;
+      }
+
+      .process-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-green);
+      }
+
+      /* Form Section */
+      .form-section {
+        background-color: var(--light-color);
+      }
+
+      .form-card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 2rem;
+      }
+
+      .form-header {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 1.5rem;
+      }
+
+      .form-body {
+        padding: 2rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+      }
+
+      .form-control,
+      .form-select {
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.1);
+      }
+
+      .form-text {
+        font-size: 0.85rem;
+        color: var(--text-light);
+      }
+
+      .file-upload {
+        border: 2px dashed var(--border-light);
+        border-radius: 4px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .file-upload:hover {
+        border-color: var(--primary-green);
+        background-color: rgba(46, 139, 87, 0.05);
+      }
+
+      .file-upload-icon {
+        font-size: 2rem;
+        color: var(--text-light);
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-submit {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+      }
+
+      .btn-submit:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-2px);
+      }
+
+      /* Status Section */
+      .status-section {
+        background-color: white;
+        display: none;
+      }
+
+      .status-card {
+        text-align: center;
+        padding: 3rem 2rem;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin: 0 auto;
+        border-left: 4px solid var(--primary-green);
+      }
+
+      .status-icon {
+        width: 80px;
+        height: 80px;
+        background-color: rgba(46, 139, 87, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--primary-green);
+        font-size: 2rem;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        background-color: var(--primary-green);
+        color: white;
+      }
+
+      .btn-cta {
+        background-color: white;
+        color: var(--primary-green);
+        border: none;
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-cta:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+      }
+
+      .footer-social-links a {
+        color: #a0aec0;
+        font-size: 1.2rem;
+        margin-right: 1rem;
+        transition: color 0.3s ease;
+      }
+
+      .footer-social-links a:hover {
+        color: var(--primary-light);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chef-hero-title {
+          font-size: 2.2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .form-body {
+          padding: 1.5rem;
+        }
+
+        .btn-hero-primary,
+        .btn-hero-secondary {
+          display: block;
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .process-connector {
+          display: none;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .chef-hero-title {
+          font-size: 1.8rem;
+        }
+
+        .chef-hero-subtitle {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fas fa-utensils me-2"></i>Smart Tiffin
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signup.html">Signup</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="chef-hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <h1 class="chef-hero-title">
+              Turn Your Passion for Cooking Into Income
+            </h1>
+            <p class="chef-hero-subtitle">
+              Serve fresh, homemade meals through Smart Tiffin and grow your
+              kitchen business! Join our network of home chefs and start earning
+              from your culinary skills.
+            </p>
+            <div class="hero-buttons">
+              <a href="#applicationForm" class="btn btn-hero-primary"
+                >Apply Now</a
+              >
+              <a href="#process" class="btn btn-hero-secondary"
+                >Learn How It Works</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="section-padding benefits-section">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Why Join Smart Tiffin?
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Discover the benefits of becoming a verified chef on our platform
+        </p>
+
+        <div class="row g-4">
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <h4>Earn from Your Kitchen</h4>
+              <p>
+                Get paid for every tiffin you serve. Turn your cooking skills
+                into a sustainable income stream.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <h4>Work Your Own Hours</h4>
+              <p>
+                Cook and deliver at your preferred time. Set your own schedule
+                that fits your lifestyle.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h4>Build Loyal Customers</h4>
+              <p>
+                Get regular subscriptions and build lasting relationships with
+                food lovers in your area.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-3 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-receipt"></i>
+              </div>
+              <h4>Hassle-free Payments</h4>
+              <p>
+                Automated, transparent payouts with clear tracking of your
+                earnings and orders.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section-padding process-section">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Process of Becoming a Chef
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Follow these simple steps to start your journey as a Smart Tiffin chef
+        </p>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+              <div class="process-connector"></div>
+              <div class="process-number">1</div>
+              <div class="process-icon">🥄</div>
+              <h4>Fill the Application Form</h4>
+              <p>
+                Provide your personal, kitchen, and contact details in the
+                registration form.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+              <div class="process-connector"></div>
+              <div class="process-number">2</div>
+              <div class="process-icon">🧾</div>
+              <h4>Verification by Admin</h4>
+              <p>
+                Our team reviews your profile, verifies your kitchen, and checks
+                documents.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step" data-aos="fade-up" data-aos-delay="300">
+              <div class="process-connector"></div>
+              <div class="process-number">3</div>
+              <div class="process-icon">📱</div>
+              <h4>Account Activation</h4>
+              <p>
+                Once approved, you'll receive confirmation that your Chef
+                Account is active.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step" data-aos="fade-up" data-aos-delay="400">
+              <div class="process-number">4</div>
+              <div class="process-icon">🍱</div>
+              <h4>Start Receiving Orders</h4>
+              <p>
+                Log in to your Chef Dashboard, add your menu, manage orders, and
+                track earnings.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+          <div class="alert alert-info d-inline-block">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Note:</strong> You can view your verification status anytime
+            (Pending / Approved / Rejected)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Application Form Section -->
+    <section id="applicationForm" class="section-padding form-section">
+      <div class="container">
+        <h2 class="section-title text-center" data-aos="fade-up">
+          Chef Application Form
+        </h2>
+        <p class="section-subtitle text-center" data-aos="fade-up">
+          Complete this form to start your journey as a Smart Tiffin chef
+        </p>
+
+        <form id="chefApplicationForm">
+          <!-- Personal Information Section -->
+          <div class="form-card" data-aos="fade-up">
+            <div class="form-header">
+              <h4 class="mb-0">
+                <i class="fas fa-user me-2"></i>Personal Information
+              </h4>
+            </div>
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="city" class="form-label">City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    placeholder="Enter your city"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="address" class="form-label">Full Address</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  rows="3"
+                  placeholder="Enter your complete address"
+                  required
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kitchen Information Section -->
+          <div class="form-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="form-header">
+              <h4 class="mb-0">
+                <i class="fas fa-utensils me-2"></i>Kitchen Information
+              </h4>
+            </div>
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="mealType" class="form-label">Type of Meals</label>
+                  <select class="form-select" id="mealType" required>
+                    <option value="" disabled selected>Select meal type</option>
+                    <option value="veg">Vegetarian Only</option>
+                    <option value="non-veg">Non-Vegetarian Only</option>
+                    <option value="both">
+                      Both Vegetarian & Non-Vegetarian
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="cuisine" class="form-label"
+                    >Cuisine Specialty</label
+                  >
+                  <select class="form-select" id="cuisine" required>
+                    <option value="" disabled selected>
+                      Select your specialty
+                    </option>
+                    <option value="north-indian">North Indian</option>
+                    <option value="south-indian">South Indian</option>
+                    <option value="mughlai">Mughlai</option>
+                    <option value="continental">Continental</option>
+                    <option value="multiple">Multiple Cuisines</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="availability" class="form-label"
+                    >Availability</label
+                  >
+                  <select class="form-select" id="availability" required>
+                    <option value="" disabled selected>
+                      Select your availability
+                    </option>
+                    <option value="weekdays">Weekdays Only</option>
+                    <option value="weekends">Weekends Only</option>
+                    <option value="all-days">All Days</option>
+                    <option value="custom">Custom Schedule</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="maxOrders" class="form-label"
+                    >Max Orders per Day</label
+                  >
+                  <select class="form-select" id="maxOrders" required>
+                    <option value="" disabled selected>
+                      Select your capacity
+                    </option>
+                    <option value="10">Up to 10 meals/day</option>
+                    <option value="20">11-20 meals/day</option>
+                    <option value="30">21-30 meals/day</option>
+                    <option value="40">31-40 meals/day</option>
+                    <option value="50">41-50 meals/day</option>
+                    <option value="50+">More than 50 meals/day</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verification & Upload Section -->
+          <div class="form-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="form-header">
+              <h4 class="mb-0">
+                <i class="fas fa-camera me-2"></i>Verification & Upload
+              </h4>
+            </div>
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="form-label">Upload Profile Photo</label>
+                  <div class="file-upload" id="profileUpload">
+                    <div class="file-upload-icon">
+                      <i class="fas fa-user-circle"></i>
+                    </div>
+                    <p class="mb-1">Click to upload profile photo</p>
+                    <small class="text-muted">JPG, PNG (Max 2MB)</small>
+                    <input type="file" class="d-none" accept="image/*" />
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Upload Kitchen Photo</label>
+                  <div class="file-upload" id="kitchenUpload">
+                    <div class="file-upload-icon">
+                      <i class="fas fa-utensils"></i>
+                    </div>
+                    <p class="mb-1">Click to upload kitchen photo</p>
+                    <small class="text-muted">JPG, PNG (Max 2MB)</small>
+                    <input type="file" class="d-none" accept="image/*" />
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Upload ID Proof</label>
+                  <div class="file-upload" id="idUpload">
+                    <div class="file-upload-icon">
+                      <i class="fas fa-id-card"></i>
+                    </div>
+                    <p class="mb-1">Click to upload ID proof</p>
+                    <small class="text-muted"
+                      >Aadhar, PAN, etc. (Max 2MB)</small
+                    >
+                    <input type="file" class="d-none" accept="image/*,.pdf" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Information Section -->
+          <div class="form-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="form-header">
+              <h4 class="mb-0">
+                <i class="fas fa-credit-card me-2"></i>Payment Information
+              </h4>
+            </div>
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="accountName" class="form-label"
+                    >Bank Account Holder Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="accountName"
+                    placeholder="Enter account holder name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="accountNumber" class="form-label"
+                    >Account Number / UPI ID</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="accountNumber"
+                    placeholder="Enter bank account number or UPI ID"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center" data-aos="fade-up">
+            <button type="submit" class="btn btn-submit">
+              Submit Application
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Application Status Section (Initially Hidden) -->
+    <section id="applicationStatus" class="section-padding status-section">
+      <div class="container">
+        <div class="status-card">
+          <div class="status-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h2>Thank You for Applying!</h2>
+          <p class="lead mb-4">
+            Your application has been submitted successfully.
+          </p>
+          <div class="alert alert-info">
+            <h5>
+              <i class="fas fa-info-circle me-2"></i>Application Status: Under
+              Review
+            </h5>
+            <p class="mb-0">
+              Your application is under review. Our verification team will
+              contact you within 48 hours.
+            </p>
+          </div>
+          <p class="text-muted mt-3">
+            You'll receive an email notification once your application is
+            reviewed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section-padding cta-section">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-8" data-aos="fade-up">
+            <h2 class="mb-4">Already registered as a Chef?</h2>
+            <p class="mb-4">
+              Access your dashboard to manage orders, update your menu, and
+              track your earnings.
+            </p>
+            <a href="login.html" class="btn btn-cta">Login Here</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-5 pb-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">
+              <i class="fas fa-utensils me-2"></i>Smart Tiffin
+            </h4>
+            <p class="mb-3">
+              Connecting homemakers with food lovers for healthy, affordable,
+              and delicious home-cooked meals.
+            </p>
+            <div class="footer-social-links">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 mb-4">
+            <h5 class="mb-3">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="index.html" class="text-white-50 text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="about.html" class="text-white-50 text-decoration-none"
+                  >About</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="contact.html"
+                  class="text-white-50 text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="login.html" class="text-white-50 text-decoration-none"
+                  >Login</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Terms of Service</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Chef Guidelines</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Contact Info</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2"></i>chefs@smarttiffin.com
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-phone me-2"></i>+91 98765 43210
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2"></i>Mumbai, India
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="bg-white" />
+
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+      });
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.style.padding = "0.5rem 0";
+          navbar.style.background = "rgba(255, 255, 255, 0.95)";
+        } else {
+          navbar.style.padding = "1rem 0";
+          navbar.style.background = "white";
+        }
+      });
+
+      // File upload functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const fileUploads = document.querySelectorAll(".file-upload");
+
+        fileUploads.forEach((upload) => {
+          const fileInput = upload.querySelector('input[type="file"]');
+
+          upload.addEventListener("click", function () {
+            fileInput.click();
+          });
+
+          fileInput.addEventListener("change", function () {
+            if (this.files && this.files[0]) {
+              const fileName = this.files[0].name;
+              upload.querySelector("p").textContent = fileName;
+              upload.style.borderColor = "#2E8B57";
+              upload.style.backgroundColor = "rgba(46, 139, 87, 0.05)";
+            }
+          });
+        });
+
+        // Form submission
+        const chefForm = document.getElementById("chefApplicationForm");
+        const statusSection = document.getElementById("applicationStatus");
+        const formSection = document.getElementById("applicationForm");
+
+        chefForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Basic validation
+          const requiredFields = chefForm.querySelectorAll("[required]");
+          let isValid = true;
+
+          requiredFields.forEach((field) => {
+            if (!field.value.trim()) {
+              field.classList.add("is-invalid");
+              isValid = false;
+            } else {
+              field.classList.remove("is-invalid");
+            }
+          });
+
+          if (!isValid) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          // Show loading state
+          const submitBtn = chefForm.querySelector(".btn-submit");
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = "Submitting...";
+          submitBtn.disabled = true;
+
+          // Simulate form submission with delay
+          setTimeout(function () {
+            // Hide form and show success message
+            formSection.style.display = "none";
+            statusSection.style.display = "block";
+
+            // Scroll to status section
+            statusSection.scrollIntoView({ behavior: "smooth" });
+
+            // Reset form and button
+            chefForm.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            // Reset file upload areas
+            fileUploads.forEach((upload) => {
+              upload.querySelector("p").textContent = "Click to upload";
+              upload.style.borderColor = "";
+              upload.style.backgroundColor = "";
+            });
+          }, 2000);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Dashboard - Smart Tiffin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+        --accent-orange: #ff6b35;
+        --sidebar-width: 260px;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark-color);
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        padding-top: 20px;
+      }
+
+      .sidebar-brand {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 20px;
+      }
+
+      .sidebar-brand h3 {
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-bottom: 0;
+      }
+
+      .sidebar-menu {
+        padding: 0 15px;
+      }
+
+      .sidebar-menu .nav-link {
+        color: var(--dark-color);
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-menu .nav-link:hover,
+      .sidebar-menu .nav-link.active {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green);
+      }
+
+      .sidebar-menu .nav-link i {
+        width: 24px;
+        margin-right: 10px;
+        text-align: center;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: var(--sidebar-width);
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+
+      /* Header */
+      .header {
+        background-color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-title h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0;
+        color: var(--dark-color);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .notification-icon,
+      .profile-dropdown {
+        position: relative;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--accent-orange);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-toggle {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-light);
+        display: none;
+      }
+
+      /* Dashboard Cards */
+      .dashboard-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+
+      .card-icon.subscriptions {
+        background-color: rgba(46, 139, 87, 0.1);
+        color: var(--primary-green);
+      }
+
+      .card-icon.meals {
+        background-color: rgba(255, 107, 53, 0.1);
+        color: var(--accent-orange);
+      }
+
+      .card-icon.delivery {
+        background-color: rgba(66, 153, 225, 0.1);
+        color: #4299e1;
+      }
+
+      .card-icon.billing {
+        background-color: rgba(159, 122, 234, 0.1);
+        color: #9f7aea;
+      }
+
+      .card-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .card-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      /* Table Styles */
+      .table-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .table-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .table-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      .table th {
+        border-top: none;
+        font-weight: 600;
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-active {
+        background-color: #f0fff4;
+        color: #38a169;
+      }
+
+      .status-paused {
+        background-color: #fef5e7;
+        color: #d69e2e;
+      }
+
+      .status-cancelled {
+        background-color: #fed7d7;
+        color: #e53e3e;
+      }
+
+      .plan-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        background-color: #ebf8ff;
+        color: #3182ce;
+      }
+
+      /* Meal Cards */
+      .meal-card {
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: white;
+        transition: all 0.3s ease;
+      }
+
+      .meal-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .meal-card.upcoming {
+        border-left: 4px solid var(--primary-green);
+      }
+
+      .meal-card.past {
+        border-left: 4px solid var(--text-light);
+      }
+
+      .meal-date {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 5px;
+      }
+
+      .meal-type {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .meal-items {
+        margin-bottom: 10px;
+      }
+
+      .meal-item {
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .meal-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Subscription Cards */
+      .subscription-card {
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: white;
+      }
+
+      .subscription-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+
+      .subscription-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+
+      .subscription-details {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .subscription-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      /* Form Styles */
+      .form-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-section-header {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .form-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      /* Rating Stars */
+      .rating-stars {
+        color: #f6ad55;
+        margin-bottom: 10px;
+      }
+
+      .rating-stars .far {
+        color: #cbd5e0;
+      }
+
+      /* Footer */
+      footer {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-top: 20px;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .btn-toggle {
+          display: block;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .header-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .subscription-header {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .subscription-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <h3><i class="fas fa-utensils me-2"></i>Smart Tiffin</h3>
+        <small class="text-muted">Customer Dashboard</small>
+      </div>
+
+      <div class="sidebar-menu">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#dashboard">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#subscriptions">
+              <i class="fas fa-clipboard-list"></i> Active Subscriptions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#upcoming-meals">
+              <i class="fas fa-calendar-alt"></i> Upcoming Meals
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#previous-meals">
+              <i class="fas fa-history"></i> Previous Meals
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#payments">
+              <i class="fas fa-credit-card"></i> Payments
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#feedback">
+              <i class="fas fa-star"></i> Feedback
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#settings">
+              <i class="fas fa-cog"></i> Profile Settings
+            </a>
+          </li>
+          <li class="nav-item mt-4">
+            <a class="nav-link text-danger" href="#logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Dashboard Overview</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="notification-icon">
+            <i class="fas fa-bell fa-lg text-muted"></i>
+            <span class="notification-badge">2</span>
+          </div>
+          <div class="profile-dropdown">
+            <div class="dropdown">
+              <a
+                href="#"
+                class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                id="profileDropdown"
+                data-bs-toggle="dropdown"
+              >
+                <img
+                  src="https://ui-avatars.com/api/?name=Rajesh+Kumar&background=2E8B57&color=fff"
+                  alt="Profile"
+                  class="rounded-circle"
+                  width="32"
+                  height="32"
+                />
+                <span class="ms-2 d-none d-sm-inline">Rajesh Kumar</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#settings"
+                    ><i class="fas fa-user me-2"></i>Profile</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#settings"
+                    ><i class="fas fa-cog me-2"></i>Settings</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#logout"
+                    ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Overview -->
+      <section id="dashboard">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="dashboard-card">
+              <div class="card-icon subscriptions">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div class="card-value">2</div>
+              <div class="card-label">Active Subscriptions</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card">
+              <div class="card-icon meals">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <div class="card-value">3</div>
+              <div class="card-label">Meals Today</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card">
+              <div class="card-icon delivery">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="card-value">12:30 PM</div>
+              <div class="card-label">Next Delivery</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="dashboard-card">
+              <div class="card-icon billing">
+                <i class="fas fa-wallet"></i>
+              </div>
+              <div class="card-value">₹3,600</div>
+              <div class="card-label">Next Payment</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Meals -->
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Today's Meals - 15 May 2025</h3>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary active">
+                Today
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">Tomorrow</button>
+              <button class="btn btn-sm btn-outline-secondary">
+                This Week
+              </button>
+            </div>
+          </div>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Lunch • 12:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>North Indian Thali</strong> - Roti, Dal Makhani, Paneer
+                Butter Masala, Rice, Salad
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Less spicy, no onions
+            </div>
+          </div>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Dinner • 7:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>Special Thali</strong> - Butter Chicken, Naan, Biryani,
+                Raita, Kheer
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Extra gravy
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Subscriptions Preview -->
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Active Subscriptions</h3>
+            <a href="#subscriptions" class="btn btn-sm btn-outline-primary"
+              >View All</a
+            >
+          </div>
+
+          <div class="subscription-card">
+            <div class="subscription-header">
+              <div>
+                <div class="subscription-title">Daily Lunch & Dinner Plan</div>
+                <div class="subscription-details">
+                  2 meals per day • Started: 10 May 2025
+                </div>
+              </div>
+              <div class="subscription-actions">
+                <button class="btn btn-sm btn-outline-primary">Pause</button>
+                <button class="btn btn-sm btn-outline-danger">Cancel</button>
+              </div>
+            </div>
+            <div class="text-muted small">
+              Delivery to: 123, MG Road, Mumbai
+            </div>
+          </div>
+
+          <div class="subscription-card">
+            <div class="subscription-header">
+              <div>
+                <div class="subscription-title">Weekly Breakfast Plan</div>
+                <div class="subscription-details">
+                  1 meal per day • Started: 12 May 2025
+                </div>
+              </div>
+              <div class="subscription-actions">
+                <button class="btn btn-sm btn-outline-primary">Modify</button>
+                <button class="btn btn-sm btn-outline-danger">Cancel</button>
+              </div>
+            </div>
+            <div class="text-muted small">
+              Delivery to: 123, MG Road, Mumbai
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Subscriptions Section -->
+      <section id="subscriptions" class="d-none">
+        <h2 class="mb-4">Active Subscriptions</h2>
+
+        <div class="subscription-card">
+          <div class="subscription-header">
+            <div>
+              <div class="subscription-title">Daily Lunch & Dinner Plan</div>
+              <div class="subscription-details">
+                <span class="plan-badge me-2">Daily Plan</span>
+                <span>2 meals per day (Lunch + Dinner)</span>
+              </div>
+            </div>
+            <div class="subscription-actions">
+              <button class="btn btn-sm btn-outline-primary">Pause</button>
+              <button class="btn btn-sm btn-outline-warning">Modify</button>
+              <button class="btn btn-sm btn-outline-danger">Cancel</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div><strong>Start Date:</strong> 10 May 2025</div>
+              <div><strong>Next Billing:</strong> 10 June 2025</div>
+            </div>
+            <div class="col-md-6">
+              <div><strong>Delivery Address:</strong> 123, MG Road, Mumbai</div>
+              <div>
+                <strong>Special Instructions:</strong> Less spicy, no onions
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subscription-card">
+          <div class="subscription-header">
+            <div>
+              <div class="subscription-title">Weekly Breakfast Plan</div>
+              <div class="subscription-details">
+                <span class="plan-badge me-2">Weekly Plan</span>
+                <span>1 meal per day (Breakfast)</span>
+              </div>
+            </div>
+            <div class="subscription-actions">
+              <button class="btn btn-sm btn-outline-primary">Pause</button>
+              <button class="btn btn-sm btn-outline-warning">Modify</button>
+              <button class="btn btn-sm btn-outline-danger">Cancel</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div><strong>Start Date:</strong> 12 May 2025</div>
+              <div><strong>Next Billing:</strong> 19 May 2025</div>
+            </div>
+            <div class="col-md-6">
+              <div><strong>Delivery Address:</strong> 123, MG Road, Mumbai</div>
+              <div>
+                <strong>Special Instructions:</strong> No sugar in tea/coffee
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add New Subscription
+          </button>
+        </div>
+      </section>
+
+      <!-- Upcoming Meals Section -->
+      <section id="upcoming-meals" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Upcoming Meals</h2>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary active">
+              Today
+            </button>
+            <button class="btn btn-sm btn-outline-secondary">Tomorrow</button>
+            <button class="btn btn-sm btn-outline-secondary">This Week</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <h4 class="mb-3">Today - 15 May 2025</h4>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Lunch • 12:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>North Indian Thali</strong> - Roti, Dal Makhani, Paneer
+                Butter Masala, Rice, Salad
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Less spicy, no onions
+            </div>
+          </div>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Dinner • 7:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>Special Thali</strong> - Butter Chicken, Naan, Biryani,
+                Raita, Kheer
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Extra gravy
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <h4 class="mb-3">Tomorrow - 16 May 2025</h4>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Breakfast • 8:00 AM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>Poha with Tea</strong> - Flattened rice with spices,
+                peanuts, and lemon
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: No sugar in tea
+            </div>
+          </div>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Lunch • 12:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>South Indian Combo</strong> - Idli, Vada, Sambar,
+                Chutney
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Less spicy, no onions
+            </div>
+          </div>
+
+          <div class="meal-card upcoming">
+            <div class="meal-date">Dinner • 7:30 PM Delivery</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>North Indian Thali</strong> - Roti, Dal Tadka, Mix Veg,
+                Rice, Salad
+              </div>
+            </div>
+            <div class="text-muted small">
+              Special Instructions: Extra gravy
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Previous Meals Section -->
+      <section id="previous-meals" class="d-none">
+        <h2 class="mb-4">Previous Meals</h2>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Meal History</h3>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary active">
+                This Week
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">
+                This Month
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">All Time</button>
+            </div>
+          </div>
+
+          <div class="meal-card past">
+            <div class="meal-date">14 May 2025 • Dinner</div>
+            <div class="meal-type">Delivered at 7:45 PM</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>Special Thali</strong> - Butter Chicken, Naan, Biryani,
+                Raita, Kheer
+              </div>
+            </div>
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span class="ms-2 text-muted">Rated</span>
+            </div>
+          </div>
+
+          <div class="meal-card past">
+            <div class="meal-date">14 May 2025 • Lunch</div>
+            <div class="meal-type">Delivered at 12:45 PM</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>North Indian Thali</strong> - Roti, Dal Makhani, Paneer
+                Butter Masala, Rice, Salad
+              </div>
+            </div>
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <span class="ms-2 text-muted">Rated</span>
+            </div>
+          </div>
+
+          <div class="meal-card past">
+            <div class="meal-date">13 May 2025 • Dinner</div>
+            <div class="meal-type">Delivered at 7:30 PM</div>
+            <div class="meal-items">
+              <div class="meal-item">
+                <strong>South Indian Combo</strong> - Idli, Vada, Sambar,
+                Chutney
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="rating-stars">
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <span class="ms-2 text-muted">Not rated</span>
+              </div>
+              <button class="btn btn-sm btn-outline-primary">Rate Now</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payments Section -->
+      <section id="payments" class="d-none">
+        <h2 class="mb-4">Payments & Billing</h2>
+
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="dashboard-card text-center">
+              <div class="card-value">₹3,600</div>
+              <div class="card-label">Next Payment</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="dashboard-card text-center">
+              <div class="card-value">10 June</div>
+              <div class="card-label">Due Date</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="dashboard-card text-center">
+              <div class="card-value">₹7,200</div>
+              <div class="card-label">Total Paid</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Payment History</h3>
+            <button class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-download me-2"></i>Export
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Invoice</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10 May 2025</td>
+                  <td>Monthly Subscription - Lunch & Dinner Plan</td>
+                  <td>₹3,600</td>
+                  <td><span class="status-badge status-active">Paid</span></td>
+                  <td><a href="#" class="text-decoration-none">Download</a></td>
+                </tr>
+                <tr>
+                  <td>12 May 2025</td>
+                  <td>Weekly Subscription - Breakfast Plan</td>
+                  <td>₹700</td>
+                  <td><span class="status-badge status-active">Paid</span></td>
+                  <td><a href="#" class="text-decoration-none">Download</a></td>
+                </tr>
+                <tr>
+                  <td>10 Apr 2025</td>
+                  <td>Monthly Subscription - Lunch & Dinner Plan</td>
+                  <td>₹3,600</td>
+                  <td><span class="status-badge status-active">Paid</span></td>
+                  <td><a href="#" class="text-decoration-none">Download</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feedback Section -->
+      <section id="feedback" class="d-none">
+        <h2 class="mb-4">Feedback & Ratings</h2>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Rate Your Recent Meals</h3>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-date">13 May 2025 • Dinner</div>
+            <div class="meal-type">South Indian Combo</div>
+            <div class="meal-items">
+              <div class="meal-item">Idli, Vada, Sambar, Chutney</div>
+            </div>
+            <div class="mt-3">
+              <div class="mb-2">Rate this meal:</div>
+              <div class="rating-stars mb-3">
+                <i class="far fa-star" data-rating="1"></i>
+                <i class="far fa-star" data-rating="2"></i>
+                <i class="far fa-star" data-rating="3"></i>
+                <i class="far fa-star" data-rating="4"></i>
+                <i class="far fa-star" data-rating="5"></i>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Comments (optional):</label>
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  placeholder="Share your feedback about this meal..."
+                ></textarea>
+              </div>
+              <button class="btn btn-primary">Submit Rating</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3 class="table-card-title">Your Previous Ratings</h3>
+          </div>
+
+          <div class="meal-card past">
+            <div class="meal-date">14 May 2025 • Dinner</div>
+            <div class="meal-type">Special Thali</div>
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="mt-2">
+              <strong>Your comment:</strong> "The butter chicken was excellent!
+              Perfectly cooked and flavorful."
+            </div>
+          </div>
+
+          <div class="meal-card past">
+            <div class="meal-date">14 May 2025 • Lunch</div>
+            <div class="meal-type">North Indian Thali</div>
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <div class="mt-2">
+              <strong>Your comment:</strong> "Good overall, but the dal was a
+              bit too salty for my taste."
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="settings" class="d-none">
+        <h2 class="mb-4">Profile Settings</h2>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Personal Information</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="Rajesh Kumar" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  value="rajesh.kumar@example.com"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="+91 98765 43210"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" value="1990-05-15" />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Update Profile</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Delivery Address</h3>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Primary Delivery Address</label>
+            <textarea class="form-control" rows="3">
+123, MG Road, Near Central Mall, Mumbai - 400001</textarea
+            >
+          </div>
+          <div class="form-text">We'll deliver your meals to this address</div>
+          <button class="btn btn-primary mt-3">Update Address</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Dietary Preferences</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Food Preference</label>
+                <select class="form-select">
+                  <option>Vegetarian</option>
+                  <option selected>Non-Vegetarian</option>
+                  <option>Eggetarian</option>
+                  <option>Vegan</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Spice Level</label>
+                <select class="form-select">
+                  <option>Mild</option>
+                  <option selected>Medium</option>
+                  <option>Spicy</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Allergies or Dietary Restrictions</label>
+            <textarea
+              class="form-control"
+              rows="3"
+              placeholder="List any food allergies or restrictions..."
+            >
+No onions, less spicy</textarea
+            >
+          </div>
+          <button class="btn btn-primary">Save Preferences</button>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Change Password</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary">Change Password</button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-end">
+            <a href="#" class="text-decoration-none me-3">Privacy Policy</a>
+            <a href="#" class="text-decoration-none me-3">Terms of Service</a>
+            <a href="#" class="text-decoration-none">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Initialize sidebar toggle
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Navigation between sections
+      document.querySelectorAll(".sidebar-menu .nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          document
+            .querySelectorAll(".sidebar-menu .nav-link")
+            .forEach((item) => {
+              item.classList.remove("active");
+            });
+
+          // Add active class to clicked link
+          this.classList.add("active");
+
+          // Hide all sections
+          document.querySelectorAll("section").forEach((section) => {
+            section.classList.add("d-none");
+          });
+
+          // Show the target section
+          const targetId = this.getAttribute("href").substring(1);
+          document.getElementById(targetId).classList.remove("d-none");
+
+          // Update header title
+          const headerTitle = document.querySelector(".header-title h1");
+          switch (targetId) {
+            case "dashboard":
+              headerTitle.textContent = "Dashboard Overview";
+              break;
+            case "subscriptions":
+              headerTitle.textContent = "Active Subscriptions";
+              break;
+            case "upcoming-meals":
+              headerTitle.textContent = "Upcoming Meals";
+              break;
+            case "previous-meals":
+              headerTitle.textContent = "Previous Meals";
+              break;
+            case "payments":
+              headerTitle.textContent = "Payments & Billing";
+              break;
+            case "feedback":
+              headerTitle.textContent = "Feedback & Ratings";
+              break;
+            case "settings":
+              headerTitle.textContent = "Profile Settings";
+              break;
+          }
+
+          // Close sidebar on mobile after selection
+          if (window.innerWidth < 992) {
+            document.querySelector(".sidebar").classList.remove("active");
+          }
+        });
+      });
+
+      // Rating stars interaction
+      document
+        .querySelectorAll(".rating-stars .far, .rating-stars .fas")
+        .forEach((star) => {
+          star.addEventListener("click", function () {
+            const rating = parseInt(this.getAttribute("data-rating"));
+            const starsContainer = this.parentElement;
+            const stars = starsContainer.querySelectorAll("i");
+
+            // Update stars to show selected rating
+            stars.forEach((s, index) => {
+              if (index < rating) {
+                s.classList.remove("far");
+                s.classList.add("fas");
+              } else {
+                s.classList.remove("fas");
+                s.classList.add("far");
+              }
+            });
+          });
+        });
+    </script>
+  </body>
+</html>
