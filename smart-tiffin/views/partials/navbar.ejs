@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-utensils me-2"></i>Smart Tiffin
+        </a>
+        
+        <div class="navbar-nav ms-auto">
+            <% if (user) { %>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i> <%= user.name %>
+                        <span class="badge bg-<%= user.role === 'admin' ? 'danger' : user.role === 'cook' ? 'warning' : 'success' %> ms-1">
+                            <%= user.role %>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/<%= user.role %>-dashboard">Dashboard</a></li>
+                        <% if (user.role === 'customer') { %>
+                            <li><a class="dropdown-item" href="/become-chef">Become a Chef</a></li>
+                        <% } %>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/signup">Sign Up</a>
+            <% } %>
+        </div>
+    </div>
+</nav>
