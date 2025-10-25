@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chef Priya's Kitchen - Smart Tiffin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --primary-light: #4caf7d;
+        --dark-color: #2d3748;
+        --light-color: #f7fafc;
+        --text-light: #718096;
+        --border-light: #e2e8f0;
+        --accent-orange: #ff6b35;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark-color);
+        background-color: #f8f9fa;
+      }
+
+      /* Navbar */
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--primary-green) !important;
+      }
+
+      /* Chef Header Section */
+      .chef-header {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url("https://images.unsplash.com/photo-1556909114-4d0d853e5e1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 60px 0;
+        position: relative;
+      }
+
+      .chef-profile {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .chef-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid white;
+        object-fit: cover;
+      }
+
+      .chef-info h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .chef-tagline {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        opacity: 0.9;
+      }
+
+      .chef-badges {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .badge-verified {
+        background: var(--primary-green);
+      }
+
+      .badge-homecooked {
+        background: #f6ad55;
+      }
+
+      .badge-nearby {
+        background: #4299e1;
+      }
+
+      .chef-stats {
+        display: flex;
+        gap: 20px;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 40px 0;
+      }
+
+      /* Subscription Cards */
+      .subscription-section {
+        margin-bottom: 40px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--dark-color);
+      }
+
+      .subscription-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .subscription-card {
+        background: white;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .subscription-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-green);
+      }
+
+      .subscription-card.popular {
+        border-color: var(--primary-green);
+        position: relative;
+      }
+
+      .popular-badge {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: var(--primary-green);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .plan-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .plan-price {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-bottom: 15px;
+      }
+
+      .plan-price span {
+        font-size: 1rem;
+        color: var(--text-light);
+        font-weight: normal;
+      }
+
+      .plan-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+      }
+
+      .plan-features li {
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .plan-features li i {
+        color: var(--primary-green);
+      }
+
+      .btn-subscribe {
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+      }
+
+      .btn-subscribe:hover {
+        background: var(--primary-light);
+      }
+
+      /* Menu Section */
+      .menu-section {
+        margin-bottom: 40px;
+      }
+
+      .menu-filters {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        padding: 8px 15px;
+        border: 1px solid var(--border-light);
+        background: white;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn.active {
+        background: var(--primary-green);
+        color: white;
+        border-color: var(--primary-green);
+      }
+
+      .menu-table {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .menu-table table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .menu-table th {
+        background: var(--light-color);
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--dark-color);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .menu-table td {
+        padding: 15px;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .menu-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .meal-items {
+        margin-bottom: 5px;
+      }
+
+      .meal-item {
+        margin-bottom: 5px;
+      }
+
+      .addon-tag {
+        background: #ebf8ff;
+        color: #3182ce;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        margin-left: 10px;
+      }
+
+      /* About Chef Section */
+      .about-section {
+        margin-bottom: 40px;
+      }
+
+      .about-card {
+        background: white;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .about-item {
+        padding: 15px;
+        border-radius: 8px;
+        background: var(--light-color);
+      }
+
+      .about-item h5 {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--primary-green);
+      }
+
+      /* Reviews Section */
+      .reviews-section {
+        margin-bottom: 40px;
+      }
+
+      .review-filters {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .review-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 15px;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+      }
+
+      .reviewer-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .reviewer-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .reviewer-name {
+        font-weight: 600;
+      }
+
+      .review-date {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .review-rating {
+        color: #f6ad55;
+        margin-bottom: 10px;
+      }
+
+      .verified-badge {
+        color: var(--primary-green);
+        font-size: 0.8rem;
+        margin-left: 10px;
+      }
+
+      /* Sticky CTA */
+      .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 15px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      .sticky-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sticky-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-green);
+      }
+
+      .sticky-price span {
+        font-size: 1rem;
+        color: var(--text-light);
+        font-weight: normal;
+      }
+
+      .btn-sticky {
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-sticky:hover {
+        background: var(--primary-light);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chef-profile {
+          flex-direction: column;
+          text-align: center;
+          gap: 15px;
+        }
+
+        .chef-info h1 {
+          font-size: 2rem;
+        }
+
+        .subscription-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .sticky-content {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fas fa-utensils me-2"></i>Smart Tiffin
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="menu-plans.html">Find Chefs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">How It Works</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <a href="#" class="btn btn-outline-secondary me-2">Login</a>
+            <a href="#" class="btn btn-primary">Sign Up</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Chef Header Section -->
+    <section class="chef-header">
+      <div class="container">
+        <div class="chef-profile">
+          <img
+            src="https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            alt="Chef Priya"
+            class="chef-avatar"
+          />
+          <div class="chef-info">
+            <h1>Priya's Homely Kitchen</h1>
+            <p class="chef-tagline">
+              Pure Vegetarian North Indian Meals • Home-Cooked with Love
+            </p>
+            <div class="chef-badges">
+              <span class="badge badge-verified">✅ Verified Kitchen</span>
+              <span class="badge badge-homecooked">🍽️ Home-Cooked</span>
+              <span class="badge badge-nearby">📍 Nearby Delivery</span>
+            </div>
+            <div class="chef-stats">
+              <div class="stat-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Sector 62, Noida • 1.2 km away</span>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-star"></i>
+                <span>4.7 (128 reviews)</span>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-clock"></i>
+                <span>Delivery: 12:30 PM & 7:30 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <!-- Subscription Options -->
+        <section class="subscription-section">
+          <h2 class="section-title">Choose Your Subscription Plan</h2>
+          <div class="subscription-cards">
+            <!-- Lunch Plan -->
+            <div class="subscription-card">
+              <div class="plan-name">Lunch Only Plan</div>
+              <div class="plan-price">₹1,499 <span>/month</span></div>
+              <ul class="plan-features">
+                <li><i class="fas fa-check"></i> 1 meal per day (Lunch)</li>
+                <li><i class="fas fa-check"></i> Monday to Saturday</li>
+                <li>
+                  <i class="fas fa-check"></i> Delivery between 12:00-1:00 PM
+                </li>
+                <li><i class="fas fa-check"></i> Rotating weekly menu</li>
+                <li><i class="fas fa-check"></i> Free delivery</li>
+              </ul>
+              <button class="btn-subscribe">Get Subscription</button>
+            </div>
+
+            <!-- Dinner Plan -->
+            <div class="subscription-card">
+              <div class="plan-name">Dinner Only Plan</div>
+              <div class="plan-price">₹1,699 <span>/month</span></div>
+              <ul class="plan-features">
+                <li><i class="fas fa-check"></i> 1 meal per day (Dinner)</li>
+                <li><i class="fas fa-check"></i> Monday to Saturday</li>
+                <li>
+                  <i class="fas fa-check"></i> Delivery between 7:00-8:00 PM
+                </li>
+                <li><i class="fas fa-check"></i> Rotating weekly menu</li>
+                <li><i class="fas fa-check"></i> Free delivery</li>
+              </ul>
+              <button class="btn-subscribe">Get Subscription</button>
+            </div>
+
+            <!-- Full Day Plan -->
+            <div class="subscription-card popular">
+              <div class="popular-badge">Most Popular</div>
+              <div class="plan-name">Full Day Plan</div>
+              <div class="plan-price">₹2,999 <span>/month</span></div>
+              <ul class="plan-features">
+                <li>
+                  <i class="fas fa-check"></i> 2 meals per day (Lunch + Dinner)
+                </li>
+                <li><i class="fas fa-check"></i> Monday to Saturday</li>
+                <li><i class="fas fa-check"></i> Flexible delivery timing</li>
+                <li><i class="fas fa-check"></i> Rotating weekly menu</li>
+                <li><i class="fas fa-check"></i> Free delivery</li>
+                <li><i class="fas fa-check"></i> Priority support</li>
+              </ul>
+              <button class="btn-subscribe">Get Subscription</button>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn btn-outline-primary">
+              <i class="fas fa-utensils me-2"></i>Customize Your Plan
+            </button>
+          </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section class="menu-section">
+          <h2 class="section-title">Weekly Menu</h2>
+          <div class="menu-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Veg Only</button>
+            <button class="filter-btn">Mild Spice</button>
+            <button class="filter-btn">North Indian</button>
+          </div>
+          <div class="menu-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Lunch Menu</th>
+                  <th>Dinner Menu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Monday</strong></td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Dal Makhani, Jeera Rice</div>
+                      <div class="meal-item">Mix Veg Sabzi, 2 Roti</div>
+                      <div class="meal-item">Salad, Papad</div>
+                    </div>
+                    <div>
+                      <small class="text-muted"
+                        >Portion: Regular | Add-ons: Curd +₹10</small
+                      >
+                    </div>
+                  </td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Paneer Butter Masala</div>
+                      <div class="meal-item">2 Naan, Rice</div>
+                      <div class="meal-item">Raita, Salad</div>
+                    </div>
+                    <div>
+                      <small class="text-muted">Portion: Regular</small>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Tuesday</strong></td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Rajma Masala, Rice</div>
+                      <div class="meal-item">Aloo Gobhi, 2 Roti</div>
+                      <div class="meal-item">Salad, Pickle</div>
+                    </div>
+                    <div>
+                      <small class="text-muted">Portion: Regular</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Chole Masala</div>
+                      <div class="meal-item">Bhature, Rice</div>
+                      <div class="meal-item">Onion Salad</div>
+                    </div>
+                    <div>
+                      <small class="text-muted"
+                        >Portion: Regular | Add-ons: Sweet +₹15</small
+                      >
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Wednesday</strong></td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Kadhi Pakora, Rice</div>
+                      <div class="meal-item">Baingan Bharta, 2 Roti</div>
+                      <div class="meal-item">Salad, Papad</div>
+                    </div>
+                    <div>
+                      <small class="text-muted">Portion: Regular</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="meal-items">
+                      <div class="meal-item">Malai Kofta</div>
+                      <div class="meal-item">2 Naan, Rice</div>
+                      <div class="meal-item">Raita, Salad</div>
+                    </div>
+                    <div>
+                      <small class="text-muted">Portion: Regular</small>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- About Chef Section -->
+        <section class="about-section">
+          <h2 class="section-title">About Chef Priya</h2>
+          <div class="about-card">
+            <p>
+              With over 8 years of experience in home cooking, Chef Priya brings
+              authentic North Indian flavors to your doorstep. Her passion for
+              cooking started in her grandmother's kitchen, and she continues
+              that tradition with her own homely kitchen.
+            </p>
+
+            <div class="about-grid">
+              <div class="about-item">
+                <h5>👩‍🍳 Experience</h5>
+                <p>
+                  8+ years of home cooking • Specialized in North Indian cuisine
+                  • Trained in hygiene and food safety
+                </p>
+              </div>
+              <div class="about-item">
+                <h5>⭐ Signature Dishes</h5>
+                <p>
+                  Paneer Butter Masala • Dal Makhani • Homemade Naan • Special
+                  Thali
+                </p>
+              </div>
+              <div class="about-item">
+                <h5>🧼 Hygiene Standards</h5>
+                <p>
+                  FSSAI Verified Kitchen • Daily sanitization • Fresh
+                  ingredients • Quality checked
+                </p>
+              </div>
+              <div class="about-item">
+                <h5>❤️ Customer Love</h5>
+                <p>
+                  97% satisfaction rate • 50+ regular subscribers • Featured in
+                  Local Food Magazine
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section class="reviews-section">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Customer Reviews</h2>
+            <div class="review-filters">
+              <button class="filter-btn active">Most Recent</button>
+              <button class="filter-btn">Highest Rated</button>
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-pen me-1"></i> Write Review
+              </button>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <img
+                  src="https://ui-avatars.com/api/?name=Rajesh+Kumar&background=2E8B57&color=fff"
+                  alt="Rajesh Kumar"
+                  class="reviewer-avatar"
+                />
+                <div>
+                  <div class="reviewer-name">Rajesh Kumar</div>
+                  <div class="review-date">2 days ago</div>
+                </div>
+              </div>
+              <div class="review-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span class="verified-badge">✓ Verified Subscriber</span>
+              </div>
+            </div>
+            <p>
+              Absolutely love the food from Priya's Kitchen! The paneer butter
+              masala is to die for, and the portions are perfect. Been
+              subscribing for 3 months now and never disappointed.
+            </p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <img
+                  src="https://ui-avatars.com/api/?name=Priya+Sharma&background=2E8B57&color=fff"
+                  alt="Priya Sharma"
+                  class="reviewer-avatar"
+                />
+                <div>
+                  <div class="reviewer-name">Priya Sharma</div>
+                  <div class="review-date">1 week ago</div>
+                </div>
+              </div>
+              <div class="review-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span class="verified-badge">✓ Verified Subscriber</span>
+              </div>
+            </div>
+            <p>
+              Great quality food and always delivered on time. The dal makhani
+              is my favorite! The only suggestion would be to include more
+              variety in the weekly menu.
+            </p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <img
+                  src="https://ui-avatars.com/api/?name=Anil+Patel&background=2E8B57&color=fff"
+                  alt="Anil Patel"
+                  class="reviewer-avatar"
+                />
+                <div>
+                  <div class="reviewer-name">Anil Patel</div>
+                  <div class="review-date">2 weeks ago</div>
+                </div>
+              </div>
+              <div class="review-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+            <p>
+              Best home-cooked food in Noida! The flavors are authentic and the
+              food always feels fresh. Highly recommended for working
+              professionals.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta">
+      <div class="container">
+        <div class="sticky-content">
+          <div>
+            <div class="sticky-price">
+              ₹2,999 <span>/month for Full Plan</span>
+            </div>
+            <small class="text-muted"
+              >Most popular • Lunch + Dinner • Free Delivery</small
+            >
+          </div>
+          <button class="btn-sticky">Subscribe Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      style="
+        background: var(--dark-color);
+        color: white;
+        padding: 40px 0 20px;
+        margin-bottom: 80px;
+      "
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">
+              <i class="fas fa-utensils me-2"></i>Smart Tiffin
+            </h4>
+            <p class="mb-3">
+              Connecting homemakers with food lovers for healthy, affordable,
+              and delicious home-cooked meals.
+            </p>
+            <div class="footer-social-links">
+              <a href="#" class="text-white-50 me-3"
+                ><i class="fab fa-instagram fa-lg"></i
+              ></a>
+              <a href="#" class="text-white-50 me-3"
+                ><i class="fab fa-facebook fa-lg"></i
+              ></a>
+              <a href="#" class="text-white-50 me-3"
+                ><i class="fab fa-twitter fa-lg"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 mb-4">
+            <h5 class="mb-3">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none">Home</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Find Chefs</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >How It Works</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Terms of Service</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white-50 text-decoration-none"
+                  >Cancellation Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Contact Info</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2"></i>hello@smarttiffin.com
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-phone me-2"></i>+91 98765 43210
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2"></i>Mumbai, India
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="bg-white" />
+
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Filter functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Menu filters
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            this.classList.add("active");
+          });
+        });
+
+        // Subscription card selection
+        const subscriptionCards =
+          document.querySelectorAll(".subscription-card");
+        subscriptionCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            // In a real app, this would update the sticky CTA with selected plan
+            const planName = this.querySelector(".plan-name").textContent;
+            const planPrice = this.querySelector(".plan-price").textContent;
+
+            document.querySelector(".sticky-price").innerHTML = `${
+              planPrice.split(" ")[0]
+            } <span>/month for ${planName}</span>`;
+          });
+        });
+
+        // Sticky CTA subscribe button
+        const subscribeBtns = document.querySelectorAll(
+          ".btn-subscribe, .btn-sticky"
+        );
+        subscribeBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            // Check if user is logged in (in real app, this would be an API call)
+            const isLoggedIn = false; // Change to true for testing
+
+            if (!isLoggedIn) {
+              // Redirect to login with return URL
+              window.location.href =
+                "login.html?returnUrl=" +
+                encodeURIComponent(window.location.href);
+            } else {
+              // Proceed to payment page
+              window.location.href = "payment.html";
+            }
+          });
+        });
+
+        // Simulate loading chef data from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const chefId = urlParams.get("id");
+
+        if (chefId) {
+          console.log("Loading data for chef ID:", chefId);
+          // In a real app, this would be an API call to fetch chef data
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,677 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Smart Tiffin</title>
-    <!-- Bootstrap 5 CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <style>
-      :root {
-        --primary-green: #2e8b57;
-        --primary-light: #4caf7d;
-        --dark-color: #2d3748;
-        --light-color: #f7fafc;
-        --text-light: #718096;
-        --border-light: #e2e8f0;
+<script>
+  class LoginManager {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.checkExistingToken();
+    }
+
+    setupEventListeners() {
+      const loginForm = document.getElementById("loginForm");
+      if (loginForm) {
+        loginForm.addEventListener("submit", (e) => this.handleLogin(e));
       }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--light-color);
-        color: var(--dark-color);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+      const roleSelect = document.getElementById("role");
+      if (roleSelect) {
+        roleSelect.addEventListener("change", (e) => this.handleRoleChange(e));
       }
+    }
 
-      /* Header Styles */
-      .login-header {
-        background-color: white;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        padding: 1rem 0;
-      }
+    async handleLogin(e) {
+      e.preventDefault();
 
-      .navbar-brand {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary-green) !important;
-      }
+      const formData = new FormData(e.target);
+      const loginData = {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        role: formData.get("role"),
+      };
 
-      .nav-link {
-        font-weight: 500;
-        color: var(--dark-color) !important;
-        transition: color 0.3s ease;
-      }
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
 
-      .nav-link:hover {
-        color: var(--primary-green) !important;
-      }
+      try {
+        // Show loading state
+        submitBtn.innerHTML =
+          '<span class="spinner-border spinner-border-sm" role="status"></span> Logging in...';
+        submitBtn.disabled = true;
 
-      /* Login Card Styles */
-      .login-container {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 0;
-      }
-
-      .login-card {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 450px;
-        padding: 2.5rem;
-      }
-
-      .login-logo {
-        text-align: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .login-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: var(--dark-color);
-      }
-
-      /* Role Selection Tabs - Improved */
-      .role-tabs {
-        display: flex;
-        background-color: var(--light-color);
-        border-radius: 8px;
-        padding: 0.3rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid var(--border-light);
-      }
-
-      .role-tab {
-        flex: 1;
-        text-align: center;
-        padding: 0.7rem 0.5rem;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.3rem;
-      }
-
-      .role-tab.active {
-        background-color: var(--primary-green);
-        color: white;
-        box-shadow: 0 2px 8px rgba(46, 139, 87, 0.3);
-      }
-
-      .role-tab:not(.active):hover {
-        background-color: rgba(46, 139, 87, 0.1);
-      }
-
-      .role-icon {
-        font-size: 1.2rem;
-      }
-
-      .role-name {
-        font-size: 0.9rem;
-      }
-
-      /* Form Styles */
-      .form-label {
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: var(--dark-color);
-      }
-
-      .form-control {
-        padding: 0.8rem 1rem;
-        border: 1px solid var(--border-light);
-        border-radius: 4px;
-        margin-bottom: 1.2rem;
-        transition: all 0.3s ease;
-      }
-
-      .form-control:focus {
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.1);
-      }
-
-      .form-control.is-invalid {
-        border-color: #e53e3e;
-        box-shadow: 0 0 0 0.2rem rgba(229, 62, 62, 0.1);
-      }
-
-      .invalid-feedback {
-        display: none;
-        color: #e53e3e;
-        font-size: 0.85rem;
-        margin-top: -0.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .form-options {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .form-check-input:checked {
-        background-color: var(--primary-green);
-        border-color: var(--primary-green);
-      }
-
-      .forgot-link {
-        color: var(--primary-green);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
-      }
-
-      .forgot-link:hover {
-        color: var(--primary-light);
-      }
-
-      /* Button Styles */
-      .btn-login {
-        background-color: var(--primary-green);
-        color: white;
-        border: none;
-        padding: 0.9rem;
-        font-size: 1rem;
-        font-weight: 600;
-        border-radius: 4px;
-        width: 100%;
-        transition: all 0.3s ease;
-        margin-bottom: 1.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .btn-login:hover:not(:disabled) {
-        background-color: var(--primary-light);
-        transform: translateY(-2px);
-      }
-
-      .btn-login:disabled {
-        background-color: var(--text-light);
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .btn-loading .btn-text {
-        visibility: hidden;
-      }
-
-      .btn-loading::after {
-        content: "";
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        border: 2px solid transparent;
-        border-top-color: white;
-        border-radius: 50%;
-        animation: button-loading-spinner 1s ease infinite;
-      }
-
-      @keyframes button-loading-spinner {
-        from {
-          transform: rotate(0turn);
-        }
-        to {
-          transform: rotate(1turn);
-        }
-      }
-
-      /* Signup Options */
-      .signup-options {
-        text-align: center;
-        margin-top: 1.5rem;
-      }
-
-      .signup-link {
-        color: var(--primary-green);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
-      }
-
-      .signup-link:hover {
-        color: var(--primary-light);
-      }
-
-      .divider {
-        display: flex;
-        align-items: center;
-        margin: 1.5rem 0;
-      }
-
-      .divider::before,
-      .divider::after {
-        content: "";
-        flex: 1;
-        border-bottom: 1px solid var(--border-light);
-      }
-
-      .divider-text {
-        padding: 0 1rem;
-        color: var(--text-light);
-        font-size: 0.9rem;
-      }
-
-      /* Role-specific info */
-      .role-info {
-        background-color: rgba(46, 139, 87, 0.05);
-        border-left: 3px solid var(--primary-green);
-        padding: 0.8rem;
-        border-radius: 0 4px 4px 0;
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-        display: none;
-      }
-
-      .role-info.active {
-        display: block;
-      }
-
-      /* Footer Styles */
-      .login-footer {
-        background-color: var(--dark-color);
-        color: white;
-        padding: 1.5rem 0;
-        margin-top: auto;
-      }
-
-      .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-      }
-
-      .footer-link {
-        color: #a0aec0;
-        text-decoration: none;
-        transition: color 0.3s ease;
-      }
-
-      .footer-link:hover {
-        color: white;
-      }
-
-      /* Responsive */
-      @media (max-width: 576px) {
-        .login-card {
-          padding: 2rem 1.5rem;
-        }
-
-        .role-tab {
-          padding: 0.6rem 0.3rem;
-          font-size: 0.9rem;
-        }
-
-        .role-icon {
-          font-size: 1rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="login-header">
-      <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <a class="navbar-brand" href="index.html">
-            <i class="fas fa-utensils me-2"></i>Smart Tiffin
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="signup.html">Signup</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Login Container -->
-    <div class="login-container">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 col-lg-5">
-            <div class="login-card">
-              <div class="login-logo">
-                <i class="fas fa-utensils fa-2x text-success"></i>
-              </div>
-              <h1 class="login-title">Login to Smart Tiffin</h1>
-
-              <!-- Role Selection Tabs -->
-              <div class="role-tabs">
-                <div class="role-tab active" data-role="customer">
-                  <i class="fas fa-user role-icon"></i>
-                  <span class="role-name">Customer</span>
-                </div>
-                <div class="role-tab" data-role="homecook">
-                  <i class="fas fa-user-tie role-icon"></i>
-                  <span class="role-name">HomeCook</span>
-                </div>
-                <div class="role-tab" data-role="admin">
-                  <i class="fas fa-user-cog role-icon"></i>
-                  <span class="role-name">Admin</span>
-                </div>
-              </div>
-
-              <!-- Role-specific Information -->
-              <div class="role-info active" id="customerInfo">
-                <i class="fas fa-info-circle me-2"></i>Login to order delicious
-                home-cooked meals
-              </div>
-              <div class="role-info" id="homecookInfo">
-                <i class="fas fa-info-circle me-2"></i>Access your cooking
-                dashboard and manage orders
-              </div>
-              <div class="role-info" id="adminInfo">
-                <i class="fas fa-info-circle me-2"></i>Admin panel for platform
-                management
-              </div>
-
-              <!-- Login Form -->
-              <form id="loginForm" novalidate>
-                <!-- Email/Username Field -->
-                <div class="mb-3">
-                  <label for="email" class="form-label" id="emailLabel"
-                    >Email Address</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    placeholder="Enter your email address"
-                    required
-                  />
-                  <div class="invalid-feedback" id="emailError">
-                    Please enter a valid email address or username.
-                  </div>
-                </div>
-
-                <!-- Password Field -->
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder="Enter your password"
-                    required
-                  />
-                  <div class="invalid-feedback" id="passwordError">
-                    Please enter your password.
-                  </div>
-                </div>
-
-                <!-- Form Options -->
-                <div class="form-options">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="rememberMe"
-                    />
-                    <label class="form-check-label" for="rememberMe">
-                      Remember me
-                    </label>
-                  </div>
-                  <a href="forgot-password.html" class="forgot-link"
-                    >Forgot Password?</a
-                  >
-                </div>
-
-                <!-- Login Button -->
-                <button type="submit" class="btn btn-login" id="loginButton">
-                  <span class="btn-text">Login</span>
-                </button>
-              </form>
-
-              <!-- Signup Options -->
-              <div class="signup-options">
-                <p>
-                  Don't have an account?
-                  <a href="signup.html" class="signup-link">Sign Up</a>
-                </p>
-
-                <div class="divider">
-                  <span class="divider-text">OR</span>
-                </div>
-
-                <p>
-                  Want to cook with us?
-                  <a href="provider-signup.html" class="signup-link"
-                    >Become a Chef</a
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="login-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 text-center">
-            <div class="footer-links mb-2">
-              <a href="#" class="footer-link">Privacy Policy</a>
-              <a href="#" class="footer-link">Terms of Service</a>
-            </div>
-            <p class="mb-0">&copy; 2025 Smart Tiffin. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Bootstrap & JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const roleTabs = document.querySelectorAll(".role-tab");
-        const loginForm = document.getElementById("loginForm");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const loginButton = document.getElementById("loginButton");
-        const roleInfos = document.querySelectorAll(".role-info");
-
-        // Current selected role
-        let currentRole = "customer";
-
-        // Role Selection Functionality
-        roleTabs.forEach((tab) => {
-          tab.addEventListener("click", function () {
-            // Remove active class from all tabs and infos
-            roleTabs.forEach((t) => t.classList.remove("active"));
-            roleInfos.forEach((info) => info.classList.remove("active"));
-
-            // Add active class to clicked tab
-            this.classList.add("active");
-
-            // Get selected role and update form
-            currentRole = this.getAttribute("data-role");
-            updateFormForRole(currentRole);
-
-            // Show relevant role info
-            document
-              .getElementById(`${currentRole}Info`)
-              .classList.add("active");
-          });
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginData),
         });
 
-        // Update form based on selected role
-        function updateFormForRole(role) {
-          const emailLabel = document.getElementById("emailLabel");
-          const emailField = document.getElementById("email");
+        const data = await response.json();
 
-          switch (role) {
-            case "customer":
-              emailLabel.textContent = "Email Address";
-              emailField.placeholder = "Enter your email address";
-              break;
-            case "homecook":
-              emailLabel.textContent = "Email or Chef ID";
-              emailField.placeholder = "Enter your email or chef ID";
-              break;
-            case "admin":
-              emailLabel.textContent = "Admin Username";
-              emailField.placeholder = "Enter admin username";
-              break;
-          }
+        if (data.status === "success") {
+          // Store token in localStorage
+          localStorage.setItem("smartTiffinToken", data.token);
+          localStorage.setItem("userData", JSON.stringify(data.data.user));
 
-          // Clear any previous validation
-          clearValidation();
-        }
+          this.showAlert("Login successful! Redirecting...", "success");
 
-        // Clear validation states
-        function clearValidation() {
-          emailInput.classList.remove("is-invalid");
-          passwordInput.classList.remove("is-invalid");
-        }
-
-        // Form validation
-        function validateForm() {
-          let isValid = true;
-
-          // Email validation
-          if (!emailInput.value.trim()) {
-            emailInput.classList.add("is-invalid");
-            isValid = false;
-          } else {
-            emailInput.classList.remove("is-invalid");
-          }
-
-          // Password validation
-          if (!passwordInput.value.trim()) {
-            passwordInput.classList.add("is-invalid");
-            isValid = false;
-          } else {
-            passwordInput.classList.remove("is-invalid");
-          }
-
-          return isValid;
-        }
-
-        // Form submission
-        loginForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Validate form
-          if (!validateForm()) {
-            return;
-          }
-
-          // Get form values
-          const email = emailInput.value;
-          const password = passwordInput.value;
-          const rememberMe = document.getElementById("rememberMe").checked;
-
-          // Show loading state
-          setLoadingState(true);
-
-          // In a real application, this would send data to the server
-          // For demo purposes, we'll simulate API call
-          simulateLogin(currentRole, email);
-        });
-
-        // Real-time validation
-        emailInput.addEventListener("input", function () {
-          if (this.value.trim()) {
-            this.classList.remove("is-invalid");
-          }
-        });
-
-        passwordInput.addEventListener("input", function () {
-          if (this.value.trim()) {
-            this.classList.remove("is-invalid");
-          }
-        });
-
-        // Set loading state
-        function setLoadingState(isLoading) {
-          if (isLoading) {
-            loginButton.disabled = true;
-            loginButton.classList.add("btn-loading");
-          } else {
-            loginButton.disabled = false;
-            loginButton.classList.remove("btn-loading");
-          }
-        }
-
-        // Simulate login and redirect
-        function simulateLogin(role, email) {
-          // Simulate API call delay
+          // Redirect based on role
           setTimeout(() => {
-            // In a real app, this would check credentials from the server
-            // For demo, we'll assume login is successful
-
-            // Redirect based on role
-            switch (role) {
-              case "customer":
-                window.location.href = "customer-dashboard.html";
-                break;
-              case "homecook":
-                window.location.href = "cook-dashboard.html";
-                break;
-              case "admin":
-                window.location.href = "admin-dashboard.html";
-                break;
-            }
-
-            // Reset loading state (in case redirect fails)
-            setLoadingState(false);
-          }, 2000);
+            this.redirectToDashboard(data.data.user.role);
+          }, 1000);
+        } else {
+          this.showAlert(data.message, "error");
         }
+      } catch (error) {
+        console.error("Login error:", error);
+        this.showAlert("Login failed. Please try again.", "error");
+      } finally {
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    }
 
-        // Demo credentials for testing
-        console.log("Demo credentials for testing:");
-        console.log("Customer: customer@example.com / anypassword");
-        console.log("HomeCook: chef@example.com / anypassword");
-        console.log("Admin: admin@example.com / anypassword");
-      });
-    </script>
-  </body>
-</html>
+    handleRoleChange(e) {
+      const role = e.target.value;
+      // You can add role-specific UI changes here
+      console.log("Role changed to:", role);
+    }
+
+    redirectToDashboard(role) {
+      const dashboards = {
+        admin: "/admin-dashboard.html",
+        chef: "/chef-dashboard.html",
+        customer: "/customer-dashboard.html",
+      };
+
+      window.location.href = dashboards[role] || "/";
+    }
+
+    checkExistingToken() {
+      const token = localStorage.getItem("smartTiffinToken");
+      if (token) {
+        // Verify token is still valid
+        fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error("Token invalid");
+          })
+          .then((data) => {
+            // Redirect to appropriate dashboard
+            this.redirectToDashboard(data.data.user.role);
+          })
+          .catch((error) => {
+            // Clear invalid token
+            localStorage.removeItem("smartTiffinToken");
+            localStorage.removeItem("userData");
+          });
+      }
+    }
+
+    showAlert(message, type) {
+      // Remove existing alerts
+      const existingAlert = document.querySelector(".alert");
+      if (existingAlert) existingAlert.remove();
+
+      const alertDiv = document.createElement("div");
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+      alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+      const form = document.getElementById("loginForm");
+      form.appendChild(alertDiv);
+    }
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    new LoginManager();
+  });
+</script>
