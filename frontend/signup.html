@@ -179,6 +179,12 @@
         transform: translateY(-2px);
       }
 
+      .btn-signup:disabled {
+        background-color: #a0aec0;
+        transform: none;
+        cursor: not-allowed;
+      }
+
       /* Social Login Section */
       .social-section {
         margin: 1.5rem 0;
@@ -450,7 +456,7 @@
                 </div>
 
                 <!-- Signup Button -->
-                <button type="submit" class="btn btn-signup">
+                <button type="submit" class="btn btn-signup" id="signupButton">
                   Create Account
                 </button>
               </form>
@@ -508,13 +514,10 @@
         const signupForm = document.getElementById("signupForm");
         const passwordInput = document.getElementById("password");
         const confirmPasswordInput = document.getElementById("confirmPassword");
-        const passwordStrengthBar = document.getElementById(
-          "passwordStrengthBar"
-        );
-        const passwordStrengthText = document.getElementById(
-          "passwordStrengthText"
-        );
+        const passwordStrengthBar = document.getElementById("passwordStrengthBar");
+        const passwordStrengthText = document.getElementById("passwordStrengthText");
         const passwordMatchText = document.getElementById("passwordMatchText");
+        const signupButton = document.getElementById("signupButton");
 
         // Password Strength Checker
         passwordInput.addEventListener("input", function () {
@@ -563,6 +566,9 @@
             } else {
               passwordStrengthText.classList.add("text-success");
             }
+          } else {
+            passwordStrengthText.className = "strength-text";
+            passwordStrengthText.textContent = "Password strength";
           }
         });
 
@@ -577,28 +583,85 @@
           }
 
           if (password === confirmPassword) {
-            passwordMatchText.textContent = "Passwords match";
+            passwordMatchText.textContent = "✓ Passwords match";
             passwordMatchText.className = "form-text text-success";
           } else {
-            passwordMatchText.textContent = "Passwords do not match";
+            passwordMatchText.textContent = "✗ Passwords do not match";
             passwordMatchText.className = "form-text text-danger";
           }
         });
+
+        // Real Signup Function - Backend Integration
+        async function realSignup(userData) {
+          try {
+            // Show loading state
+            signupButton.textContent = "Creating Account...";
+            signupButton.disabled = true;
+
+            const response = await fetch("http://localhost:5000/api/auth/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(userData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              alert("Account created successfully! Redirecting to login...");
+              window.location.href = "login.html";
+            } else {
+              alert("Signup failed: " + result.message);
+              // Reset button
+              signupButton.textContent = "Create Account";
+              signupButton.disabled = false;
+            }
+            
+          } catch (error) {
+            console.error("Signup error:", error);
+            alert("Network error. Please check if server is running.");
+            
+            // Reset button
+            signupButton.textContent = "Create Account";
+            signupButton.disabled = false;
+          }
+        }
 
         // Form submission
         signupForm.addEventListener("submit", function (e) {
           e.preventDefault();
 
           // Get form values
-          const fullName = document.getElementById("fullName").value;
-          const email = document.getElementById("email").value;
-          const phone = document.getElementById("phone").value;
+          const fullName = document.getElementById("fullName").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const phone = document.getElementById("phone").value.trim();
           const password = passwordInput.value;
           const confirmPassword = confirmPasswordInput.value;
-          const address = document.getElementById("address").value;
+          const address = document.getElementById("address").value.trim();
           const agreeTerms = document.getElementById("agreeTerms").checked;
 
           // Validation
+          if (!fullName) {
+            alert("Please enter your full name.");
+            return;
+          }
+
+          if (!email) {
+            alert("Please enter your email address.");
+            return;
+          }
+
+          if (!phone) {
+            alert("Please enter your phone number.");
+            return;
+          }
+
+          if (!password) {
+            alert("Please create a password.");
+            return;
+          }
+
           if (!agreeTerms) {
             alert("Please agree to the Terms of Service and Privacy Policy.");
             return;
@@ -614,45 +677,27 @@
             return;
           }
 
-          // In a real application, this would send data to the server
-          // For demo purposes, we'll simulate a successful signup
-          simulateSignup();
+          // Create user data object
+          const userData = {
+            fullName: fullName,
+            email: email,
+            phone: phone,
+            password: password,
+            address: address
+          };
+
+          // Call real signup function
+          realSignup(userData);
         });
 
         // Social login buttons
-        document
-          .querySelector(".btn-google")
-          .addEventListener("click", function () {
-            alert("Google signup would be implemented here.");
-          });
+        document.querySelector(".btn-google").addEventListener("click", function () {
+          alert("Google signup would be implemented here.");
+        });
 
-        document
-          .querySelector(".btn-facebook")
-          .addEventListener("click", function () {
-            alert("Facebook signup would be implemented here.");
-          });
-
-        // Simulate signup and redirect
-        function simulateSignup() {
-          // Show loading state
-          const signupBtn = document.querySelector(".btn-signup");
-          const originalText = signupBtn.textContent;
-          signupBtn.textContent = "Creating Account...";
-          signupBtn.disabled = true;
-
-          // Simulate API call delay
-          setTimeout(() => {
-            // Show success message
-            alert("Account created successfully! Redirecting to login...");
-
-            // Redirect to login page
-            window.location.href = "login.html";
-
-            // Reset button (in case redirect fails)
-            signupBtn.textContent = originalText;
-            signupBtn.disabled = false;
-          }, 2000);
-        }
+        document.querySelector(".btn-facebook").addEventListener("click", function () {
+          alert("Facebook signup would be implemented here.");
+        });
       });
     </script>
   </body>

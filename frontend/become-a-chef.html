@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Chef - Smart Tiffin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2e8b57;
+            --primary-light: #4caf7d;
+        }
+        
+        .chef-hero {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        
+        .step.active {
+            background: var(--primary-green);
+            color: white;
+        }
+        
+        .step-divider {
+            width: 60px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 5px;
+            align-self: center;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .benefit-card {
+            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-success" href="index.html">
+                <i class="fas fa-utensils me-2"></i>Smart Tiffin
+            </a>
+        </div>
+    </nav>
+
+    <section class="chef-hero text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Start Your Cooking Journey</h1>
+            <p class="lead mb-4">Join thousands of home chefs earning with their culinary skills</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="row text-start">
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-rupee-sign fa-2x me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Earn ₹15,000+</h5>
+                                    <small>Monthly Income</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-users fa-2x me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">500+ Chefs</h5>
+                                    <small>Already Joined</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock fa-2x me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Flexible Hours</h5>
+                                    <small>Work from Home</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="form-section">
+                    <div class="step-indicator">
+                        <div class="step active" id="indicator1">1</div>
+                        <div class="step-divider"></div>
+                        <div class="step" id="indicator2">2</div>
+                        <div class="step-divider"></div>
+                        <div class="step" id="indicator3">3</div>
+                    </div>
+
+                    <form id="chefApplicationForm">
+                        <div class="form-step active" id="step1">
+                            <h3 class="text-center mb-4">Personal Information</h3>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" name="fullName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" name="phone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Date of Birth *</label>
+                                    <input type="date" class="form-control" name="dob" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">City *</label>
+                                    <input type="text" class="form-control" name="city" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Experience (Years) *</label>
+                                    <select class="form-select" name="experience" required>
+                                        <option value="">Select Experience</option>
+                                        <option value="0-1">0-1 years</option>
+                                        <option value="1-3">1-3 years</option>
+                                        <option value="3-5">3-5 years</option>
+                                        <option value="5+">5+ years</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-success" onclick="nextStep(2)">Next <i class="fas fa-arrow-right ms-2"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-step" id="step2">
+                            <h3 class="text-center mb-4">Kitchen & Cuisine Details</h3>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Kitchen Name *</label>
+                                    <input type="text" class="form-control" name="kitchenName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Specialty Cuisine *</label>
+                                    <select class="form-select" name="cuisine" required>
+                                        <option value="">Select Cuisine</option>
+                                        <option value="north-indian">North Indian</option>
+                                        <option value="south-indian">South Indian</option>
+                                        <option value="mumbai-street">Mumbai Street Food</option>
+                                        <option value="continental">Continental</option>
+                                        <option value="multiple">Multiple Cuisines</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">FSSAI License Number</label>
+                                    <input type="text" class="form-control" name="fssaiLicense" placeholder="Optional">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Maximum Daily Orders *</label>
+                                    <select class="form-select" name="maxOrders" required>
+                                        <option value="">Select Max Orders</option>
+                                        <option value="10">10 orders</option>
+                                        <option value="20">20 orders</option>
+                                        <option value="30">30 orders</option>
+                                        <option value="40">40 orders</option>
+                                        <option value="50">50+ orders</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Kitchen Address *</label>
+                                <textarea class="form-control" name="kitchenAddress" rows="3" required placeholder="Enter complete kitchen address"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Cooking Equipment Available *</label>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="equipment" value="gas-stove">
+                                            <label class="form-check-label">Gas Stove</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="equipment" value="oven">
+                                            <label class="form-check-label">Oven</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="equipment" value="mixer">
+                                            <label class="form-check-label">Mixer</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="equipment" value="refrigerator">
+                                            <label class="form-check-label">Refrigerator</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">At least one equipment must be selected</small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-outline-secondary" onclick="prevStep(1)"><i class="fas fa-arrow-left me-2"></i>Back</button>
+                                <button type="button" class="btn btn-success" onclick="nextStep(3)">Next <i class="fas fa-arrow-right ms-2"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-step" id="step3">
+                            <h3 class="text-center mb-4">Bank & Final Details</h3>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bank Account Holder Name *</label>
+                                    <input type="text" class="form-control" name="accountHolder" required placeholder="As per bank records">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bank Account Number *</label>
+                                    <input type="text" class="form-control" name="accountNumber" required placeholder="Enter account number">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">IFSC Code *</label>
+                                    <input type="text" class="form-control" name="ifscCode" required placeholder="e.g., SBIN0000123">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bank Name *</label>
+                                    <input type="text" class="form-control" name="bankName" required placeholder="e.g., State Bank of India">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Why do you want to become a chef with us? *</label>
+                                <textarea class="form-control" name="motivation" rows="3" required placeholder="Share your passion for cooking and why you want to join Smart Tiffin..."></textarea>
+                                <small class="text-muted">Minimum 50 characters</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Upload Sample Food Photos (Optional)</label>
+                                <input type="file" class="form-control" name="foodPhotos" multiple accept="image/*">
+                                <div class="form-text">You can upload up to 5 photos of your cooking (JPEG, PNG, max 5MB each)</div>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="#" class="text-success">Terms & Conditions</a> and <a href="#" class="text-success">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2)"><i class="fas fa-arrow-left me-2"></i>Back</button>
+                                <button type="submit" class="btn btn-success" id="submitApplication">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h2 class="text-center mb-5">Why Join as a Chef?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h5>Good Earnings</h5>
+                    <p>Earn ₹15,000 - ₹50,000 per month based on your orders</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5>Built-in Customer Base</h5>
+                    <p>We handle marketing and bring customers to you</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h5>Flexible Timing</h5>
+                    <p>Cook at your convenience from your home kitchen</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Smart Tiffin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- MULTI-STEP NAVIGATION FUNCTIONS ---
+        const totalSteps = 3;
+
+        function updateStepIndicator(currentStep) {
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById(`indicator${i}`);
+                if (i === currentStep) {
+                    indicator.classList.add('active');
+                    indicator.textContent = i;
+                } else {
+                    indicator.classList.remove('active');
+                    indicator.textContent = i;
+                }
+            }
+        }
+
+        function showStep(step) {
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.getElementById(`step${i}`);
+                if (i === step) {
+                    stepElement.classList.add('active');
+                } else {
+                    stepElement.classList.remove('active');
+                }
+            }
+            updateStepIndicator(step);
+        }
+
+        function prevStep(prevStepNumber) {
+            showStep(prevStepNumber);
+        }
+
+        function nextStep(nextStepNumber) {
+            const currentStep = nextStepNumber - 1;
+            if (validateStep(currentStep)) {
+                showStep(nextStepNumber);
+            }
+        }
+        
+        // --- ENHANCED VALIDATION FUNCTION (from your request) ---
+        function validateStep(step) {
+            const currentStepEl = document.getElementById(`step${step}`);
+            // Select only REQUIRED fields within the current step
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
+            
+            for (let input of inputs) {
+                // Check if the input is empty
+                if (!input.value.trim()) {
+                    // Try to get a meaningful label for the alert
+                    const labelText = input.previousElementSibling ? input.previousElementSibling.textContent.replace('*', '').trim() : input.name;
+                    alert(`Please fill in: ${labelText}`);
+                    input.focus();
+                    return false;
+                }
+            }
+            
+            // --- Special Validation for Step 2: Equipment Check ---
+            if (step === 2) {
+                const equipment = document.querySelectorAll('#step2 input[name="equipment"]:checked');
+                if (equipment.length === 0) {
+                    alert('Please select at least one cooking equipment.');
+                    document.querySelector('#step2 input[name="equipment"]').focus();
+                    return false;
+                }
+            }
+
+            // --- Special Validation for Step 3: Motivation and Terms Check ---
+            if (step === 3) {
+                // Motivation Length Check
+                const motivation = document.querySelector('textarea[name="motivation"]').value;
+                if (motivation.length < 50) {
+                    alert('Please write at least 50 characters about your motivation.');
+                    document.querySelector('textarea[name="motivation"]').focus();
+                    return false;
+                }
+                
+                // Terms Agreement Check
+                const agreeTerms = document.getElementById('agreeTerms');
+                if (!agreeTerms.checked) {
+                    alert('You must agree to the Terms & Conditions to submit.');
+                    agreeTerms.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // --- UPDATED FORM SUBMISSION (from your request) ---
+        document.getElementById('chefApplicationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            console.log('=== FORM SUBMISSION STARTED ===');
+            
+            // Final validation check before submission
+            if (!validateStep(3)) {
+                console.log('Final validation failed');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitApplication');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+
+            try {
+                // Collect ALL form data using the correct selectors
+                const formData = {
+                    // Step 1: Personal Information
+                    fullName: document.querySelector('input[name="fullName"]').value,
+                    email: document.querySelector('input[name="email"]').value,
+                    phone: document.querySelector('input[name="phone"]').value,
+                    dob: document.querySelector('input[name="dob"]').value,
+                    city: document.querySelector('input[name="city"]').value,
+                    experience: document.querySelector('select[name="experience"]').value,
+                    
+                    // Step 2: Kitchen Details
+                    kitchenName: document.querySelector('input[name="kitchenName"]').value,
+                    cuisine: document.querySelector('select[name="cuisine"]').value,
+                    // Use || '' for optional field like FSSAI
+                    fssaiLicense: document.querySelector('input[name="fssaiLicense"]').value || '', 
+                    // Convert to integer before sending
+                    maxOrders: parseInt(document.querySelector('select[name="maxOrders"]').value), 
+                    kitchenAddress: document.querySelector('textarea[name="kitchenAddress"]').value,
+                    // Collect all checked checkbox values into an array
+                    equipment: Array.from(document.querySelectorAll('input[name="equipment"]:checked')).map(cb => cb.value),
+                    
+                    // Step 3: Bank & Final Details
+                    accountHolder: document.querySelector('input[name="accountHolder"]').value,
+                    accountNumber: document.querySelector('input[name="accountNumber"]').value,
+                    ifscCode: document.querySelector('input[name="ifscCode"]').value,
+                    bankName: document.querySelector('input[name="bankName"]').value,
+                    motivation: document.querySelector('textarea[name="motivation"]').value,
+                    
+                    // Metadata required by the backend schema
+                    status: 'pending' 
+                };
+
+                console.log('Form data collected:', formData);
+
+                // NOTE: File upload (foodPhotos) is not included in this JSON data, 
+                // as it requires a separate FormData submission (multipart/form-data) 
+                // which is more complex. We are submitting non-file data as JSON.
+
+                const response = await fetch('http://localhost:5000/api/chef-applications', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                console.log('Server response:', result);
+
+                if (result.success) {
+                    alert('✅ Application submitted successfully! We will review it within 2-3 business days.');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('❌ Submission failed: ' + result.message);
+                }
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('🔴 Network error. Please check console for details.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+        
+        // Initialize step indicator on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStepIndicator(1);
+        });
+    </script>
+</body>
+</html>

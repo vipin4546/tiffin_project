@@ -1,9 +1,10 @@
 const express = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { generateToken, protect, authorize } = require('../middleware/auth');
 const router = express.Router();
 
-// SIGNUP ENDPOINT
+// SIGNUP ENDPOINT (with JWT token)
 router.post('/signup', async (req, res) => {
     try {
         const { fullName, email, phone, password, address } = req.body;
@@ -37,10 +38,14 @@ router.post('/signup', async (req, res) => {
         // Save user to database
         await newUser.save();
 
-        // Success response
+        // Generate JWT token
+        const token = generateToken(newUser);
+
+        // Success response with token
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
+            token: token,
             user: {
                 id: newUser._id,
                 fullName: newUser.fullName,
@@ -58,7 +63,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// LOGIN ENDPOINT
+// LOGIN ENDPOINT (with JWT token)
 router.post('/login', async (req, res) => {
     try {
         const { email, password, role } = req.body;
@@ -79,9 +84,20 @@ router.post('/login', async (req, res) => {
             const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
             
             if (email === adminEmail && password === adminPassword) {
+                // Create admin user object for token
+                const adminUser = {
+                    _id: 'admin-001',
+                    email: email,
+                    role: 'admin',
+                    name: 'Admin User'
+                };
+                
+                const token = generateToken(adminUser);
+                
                 return res.json({
                     success: true,
                     message: 'Admin login successful',
+                    token: token,
                     role: 'admin',
                     user: {
                         id: 'admin-001',
@@ -127,10 +143,14 @@ router.post('/login', async (req, res) => {
                 });
             }
 
+            // Generate JWT token
+            const token = generateToken(user);
+
             // Login successful
             return res.json({
                 success: true,
                 message: 'Login successful',
+                token: token,
                 role: user.role,
                 user: {
                     id: user._id,
@@ -151,6 +171,44 @@ router.post('/login', async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Server error during login'
+        });
+    }
+});
+
+// PROTECTED ROUTE EXAMPLE - Get current user profile
+router.get('/profile', protect, async (req, res) => {
+    try {
+        res.json({
+            success: true,
+            user: req.user
+        });
+    } catch (error) {
+        console.error('Profile error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
+    }
+});
+
+// PROTECTED ROUTE EXAMPLE - Admin only
+router.get('/admin/stats', protect, authorize('admin'), async (req, res) => {
+    try {
+        // This route only accessible by admin
+        const userCount = await User.countDocuments();
+        
+        res.json({
+            success: true,
+            stats: {
+                totalUsers: userCount,
+                message: 'Admin statistics'
+            }
+        });
+    } catch (error) {
+        console.error('Admin stats error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
         });
     }
 });

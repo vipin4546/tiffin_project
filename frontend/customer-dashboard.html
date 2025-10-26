@@ -1,3 +1,50 @@
+<script>
+// Check if user is logged in
+document.addEventListener("DOMContentLoaded", function() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userRole = localStorage.getItem('role');
+    const currentPage = window.location.pathname;
+    
+    // Redirect to login if not authenticated
+    if (!isLoggedIn) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Role-based page access control
+    if (currentPage.includes('customer-dashboard') && userRole !== 'customer') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    if (currentPage.includes('chef-dashboard') && userRole !== 'homecook') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    if (currentPage.includes('admin-dashboard') && userRole !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Display user info
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        // Update profile name etc. as needed
+        console.log('Logged in as:', user.name);
+    }
+});
+
+// Logout functionality
+function logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('role');
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'login.html';
+}
+</script>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
