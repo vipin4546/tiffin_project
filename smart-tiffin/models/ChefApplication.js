@@ -105,7 +105,7 @@ const chefApplicationSchema = new mongoose.Schema({
         type: Date
     },
     reviewedBy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User'
     }
 });

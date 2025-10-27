@@ -175,6 +175,32 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// GET CURRENT USER PROFILE
+router.get('/me', protect, async (req, res) => {
+    try {
+        // Return user data without password
+        const userData = {
+            id: req.user._id,
+            fullName: req.user.fullName,
+            email: req.user.email,
+            phone: req.user.phone,
+            role: req.user.role,
+            address: req.user.address
+        };
+        
+        res.json({
+            success: true,
+            user: userData
+        });
+    } catch (error) {
+        console.error('Get user profile error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error while fetching user data'
+        });
+    }
+});
+
 // PROTECTED ROUTE EXAMPLE - Get current user profile
 router.get('/profile', protect, async (req, res) => {
     try {
