@@ -7,12 +7,13 @@ const path = require('path');
 // Import routes
 const authRoutes = require('./routes/auth');
 const chefApplicationsRoutes = require('./routes/chefApplications');
+const cookRoutes = require('./routes/cooks');
 
 dotenv.config();
 
 const app = express();
 
-// ✅ FIX: Enhanced CORS Setup
+// ✅ Enhanced CORS Setup
 app.use(cors({
     origin: [
         'http://127.0.0.1:5500', 
@@ -22,7 +23,6 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:5000',
         'http://127.0.0.1:5000'
-
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -47,6 +47,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-tif
 // Routes Setup
 app.use('/api/auth', authRoutes);
 app.use('/api/chef-applications', chefApplicationsRoutes);
+app.use('/api/cooks', cookRoutes);
 
 // ✅ Serve frontend files for all routes
 app.get('*', (req, res) => {

@@ -146,6 +146,12 @@ const protect = async (req, res, next) => {
 // Role-based authorization middleware
 const authorize = (...roles) => {
     return (req, res, next) => {
+        console.log('🔐 Authorization Check:', {
+      user: req.user,
+      requiredRoles: roles,
+      userRole: req.user?.role
+    });
+
         if (!req.user) {
             return res.status(401).json({
                 success: false,
@@ -154,11 +160,18 @@ const authorize = (...roles) => {
         }
 
         if (!roles.includes(req.user.role)) {
+                  console.log('❌ Role not authorized:', {
+        userRole: req.user.role,
+        requiredRoles: roles
+      });
+
             return res.status(403).json({
                 success: false,
                 message: `User role ${req.user.role} is not authorized to access this route`
             });
         }
+        console.log('✅ Authorization successful');
+
         next();
     };
 };
