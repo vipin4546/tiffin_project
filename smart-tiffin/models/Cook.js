@@ -1,10 +1,23 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const cookSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  // ✅ NEW: Cook login credentials
+  cookEmail: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+    lowercase: true
+  },
+  cookPassword: {
+    type: String,
+    minlength: 6
   },
   kitchenName: {
     type: String,
@@ -78,5 +91,23 @@ const cookSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// ✅ Password hashing middleware
+cookSchema.pre('save', async function(next) {
+  if (!this.isModified('cookPassword')) return next();
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.cookPassword = await bcrypt.hash(this.cookPassword, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ✅ Compare password method
+cookSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.cookPassword);
+};
 
 module.exports = mongoose.model('Cook', cookSchema);

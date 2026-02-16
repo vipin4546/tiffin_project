@@ -370,51 +370,68 @@
           margin-right: 0;
         }
       }
+      
     </style>
+    <link rel="stylesheet" href="./css/navbar.css">
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <i class="fas fa-utensils me-2"></i>Smart Tiffin
-        </a>
+    <<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-utensils me-2"></i>Smart Tiffin
+    </a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="about.html">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="plans.html">Meal Plans</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="how-it-works.html">How It Works</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact Us</a>
-            </li>
-          </ul>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="how-it-works.html">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="plans.html">Menu / Plans</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="become-a-chef.html">Become a Chef</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">Contact Us</a>
+        </li>
+      </ul>
 
-          <div class="navbar-nav">
-            <a class="nav-link btn btn-login me-2" href="login.html">Login</a>
-            <a class="nav-link btn btn-signup" href="signup.html">Sign Up</a>
-          </div>
+      <!-- Auth Buttons (Visible when not logged in) -->
+      <div id="authButtons" class="navbar-nav">
+        <a class="nav-link btn btn-login me-2" href="login.html">Login</a>
+        <a class="nav-link btn btn-signup" href="signup.html">Sign Up</a>
+      </div>
+      
+      <!-- User Profile (Visible when logged in) -->
+      <div id="userProfile" class="user-profile" style="display: none;">
+        <div class="profile-icon" onclick="toggleProfileDropdown()">
+          <span id="userName"></span>
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div id="profileDropdown" class="profile-dropdown">
+          <a href="customer-dashboard.html" class="dropdown-item">
+            <i class="fas fa-tachometer-alt"></i> My Dashboard
+          </a>
+          <a href="#" class="dropdown-item" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
         </div>
       </div>
-    </nav>
+    </div>
+  </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="about-hero">
@@ -833,5 +850,6 @@
         });
       });
     </script>
+    <script src="./js/auth.js"></script>
   </body>
 </html>
